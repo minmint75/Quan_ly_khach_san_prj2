@@ -1,23 +1,18 @@
-package Entity;
+package entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "Booking")
+@Table(name = "Customer")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class Booking {
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long bookingId;
+    private long customerId;
 
 }
