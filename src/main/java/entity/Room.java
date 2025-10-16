@@ -43,14 +43,11 @@ public class Room {
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     @NotNull(message = "Giá phòng không được để trống")
     @Positive(message = "Giá phòng phải lớn hơn 0")
-    private BigDecimal price;
+    private BigDecimal roomPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private RoomStatus status;
-
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
+    private RoomStatus roomStatus;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
