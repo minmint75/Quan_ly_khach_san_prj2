@@ -30,23 +30,31 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String roomId;
 
-    @Column(name = "room_number", nullable = false, unique = true, length = 10)
+    @Column(name = "So phong", nullable = false, unique = true, length = 10)
     @NotNull(message = "Số phòng không được để trống")
     @Size(min = 1, max = 10, message = "Số phòng có 1-10 kí tự")
     private String roomNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "room_type", nullable = false)
+    @Column(name = "Loai Phong", nullable = false)
     @NotNull(message = "Loại phòng không được để trống")
     private RoomType roomType;
 
-    @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    @Column(name = "Tang phong", nullable = false, unique=true)
+    @NotNull(message = "Tầng phòng không được để trống")
+    @Positive(message = "Tầng phòng phải là số dương")
+    private int roomFloor;
+
+    @Column(name = "Gia phong", nullable = false, precision = 10, scale = 2)
     @NotNull(message = "Giá phòng không được để trống")
     @Positive(message = "Giá phòng phải lớn hơn 0")
     private BigDecimal roomPrice;
 
+    @Column(name = "Tien nghi phong", length = 255, nullable = true)
+    private String roomAmenities;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "Trang thai phong", nullable = false)
     private RoomStatus roomStatus;
 
     @Column(name = "created_at")
@@ -59,8 +67,8 @@ public class Room {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        if (status == null) {
-            status = RoomStatus.AVAILABLE;
+        if (roomStatus == null) {
+            roomStatus = RoomStatus.AVAILABLE;
         }
     }
 
