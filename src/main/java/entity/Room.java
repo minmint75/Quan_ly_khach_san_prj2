@@ -110,8 +110,4 @@ public class Room {
             return displayName;
         }
     }
-
-    public String getRoomTypeDisplayName() {
-        return roomType.getDisplayName();
-    }
 }
