@@ -34,12 +34,12 @@ public class Customer {
 
     @Column(name = "identification", nullable = false, length = 12)
     @NotBlank(message = "CCCD không được để trống")
-    @Pattern(regexp = "^[0-9]{9,12}$", message = "CCCD phải là 9-12 chữ số")
+    @Pattern(regexp = "^[0-9]{12}$", message = "CCCD phải là 12 chữ số")
     private String identification;
 
     @Column(name = "phone_number", nullable = false, length = 10)
     @NotBlank(message = "Số điện thoại không được để trống")
-    @Pattern(regexp = "^(0[0-9]{9})$", message = "Số điện thoại Việt Nam phải có 10 số và bắt đầu bằng 0")
+    @Pattern(regexp = "^(0[0-9]{9})$", message = "Số điện thoại phải có 10 số và bắt đầu bằng 0")
     private String phoneNumber;
 
     @Column(name = "nationality", length = 50)
