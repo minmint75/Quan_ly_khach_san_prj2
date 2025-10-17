@@ -14,27 +14,27 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    Optional<Customer> findByCustomerID(String customerID);
+    Optional<Customer> findByname(String name);
 
     Optional<Customer> findByCitizenID(String identification);
 
     Optional<Customer> findByEmail(String email);
 
     @Query("SELECT c FROM Customer c WHERE " +
-            "(:customerID IS NULL OR :customerID = '' OR c.customerID = :customerID) AND " +
+            "(:name IS NULL OR :name = '' OR c.name = :name) AND " +
             "(:identification  IS NULL OR :identification  = '' OR c.identification  = :identification) AND " +
             "(:phoneNumber IS NULL OR :phoneNumber = '' OR c.phoneNumber = :phoneNumber) " +
-            "ORDER BY c.customerID DESC")
-    List<Customer> findByFilters(@Param("customerID") String customerID,
+            "ORDER BY c.name DESC")
+    List<Customer> findByFilters(@Param("name") String name,
                                  @Param("identification") String citizenID,
                                  @Param("phoneNumber") String phoneNumber);
 
     @Query("SELECT c FROM Customer c WHERE" +
-                "(:customerID     IS NULL OR c.customerID     = :customerID) AND" +
+                "(:name     IS NULL OR c.name     = :name) AND" +
                 "(:identification IS NULL OR c.identification = :identification) AND" +
                 "(:phoneNumber    IS NULL OR c.phoneNumber    = :phoneNumber)")
 
-    Page<Customer> findByFiltersPageable(@Param("customerID") String customerID,
+    Page<Customer> findByFiltersPageable(@Param("name") String name,
                                          @Param("identification") String identification,
                                          @Param("phoneNumber") String phoneNumber,
                                          Pageable pageable);
