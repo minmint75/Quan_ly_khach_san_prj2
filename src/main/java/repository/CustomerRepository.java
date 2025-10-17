@@ -30,9 +30,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
                                  @Param("phoneNumber") String phoneNumber);
 
     @Query("SELECT c FROM Customer c WHERE" +
-                "(:name     IS NULL OR c.name     = :name) AND" +
+                "(:name IS NULL OR c.name = :name) AND" +
                 "(:identification IS NULL OR c.identification = :identification) AND" +
-                "(:phoneNumber    IS NULL OR c.phoneNumber    = :phoneNumber)")
+                "(:phoneNumber IS NULL OR c.phoneNumber = :phoneNumber)")
 
     Page<Customer> findByFiltersPageable(@Param("name") String name,
                                          @Param("identification") String identification,
