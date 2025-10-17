@@ -1,0 +1,42 @@
+package repository;
+
+import entity.Customer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
+
+    Optional<Customer> findByCustomerID(String customerID);
+
+    Optional<Customer> findByCitizenID(String citizenID);
+
+    Optional<Customer> findByEmail(String email);
+
+    @Query("SELECT c FROM Customer c WHERE " +
+            "(:customerID IS NULL OR :customerID = '' OR c.customerID = :customerID) AND " +
+            "(:identification  IS NULL OR :identification  = '' OR c.identification  = :identification) AND " +
+            "(:phoneNumber IS NULL OR :phoneNumber = '' OR c.phoneNumber = :phoneNumber) " +
+            "ORDER BY c.customerID DESC")
+    List<Customer> findByFilters(@Param("customerID") String customerID,
+                                 @Param("identification") String citizenID,
+                                 @Param("phoneNumber") String phoneNumber);
+
+    @Query("SELECT c FROM Customer c WHERE" +
+                "(:customerID     IS NULL OR c.customerID     = :customerID) AND" +
+                "(:identification IS NULL OR c.identification = :identification) AND" +
+                "(:phoneNumber    IS NULL OR c.phoneNumber    = :phoneNumber)")
+
+    Page<Customer> findByFiltersPageable(@Param("customerID") String customerID,
+                                         @Param("identification") String identification,
+                                         @Param("phoneNumber") String phoneNumber,
+                                         Pageable pageable);
+}
+
