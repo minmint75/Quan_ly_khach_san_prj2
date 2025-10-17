@@ -42,4 +42,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
                                         @Param("roomId") String roomId,
                                         Pageable pageable);
 
+    void deleteById(String bookingId);
 }
