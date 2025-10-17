@@ -81,5 +81,10 @@ public class Customer {
             return displayName;
         }
     }
-}
 
+    // ===========================
+    // Placeholder method for commit
+    public void placeholderForCommit() {
+        // This method does nothing, just to create a small change for commit
+    }
+}
