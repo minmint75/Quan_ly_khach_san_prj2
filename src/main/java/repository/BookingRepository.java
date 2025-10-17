@@ -27,6 +27,12 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
                                 @Param("customerId") String customerId,
                                 @Param("roomId") String roomId);
 
+    @Query("SELECT b FROM Booking b ORDER BY b.bookingId DESC")
+    List<Booking> findAllOrderByIdDesc();
+
+    Page<Booking> findAll(Pageable pageable);
+
+
     @Query("SELECT b FROM Booking b WHERE " +
             "(:bookingId IS NULL OR b.bookingId = :bookingId) AND " +
             "(:customerId IS NULL OR b.customerId = :customerId) AND " +
