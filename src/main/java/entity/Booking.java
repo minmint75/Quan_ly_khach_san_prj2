@@ -21,12 +21,12 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String bookingId;
 
-    @Column(name ="Ma khach hang", nullable = false, length = 6)
+    @Column(name ="customer_id", nullable = false, length = 6)
     @NotNull(message = "Mã khách hàng không được để trống")
     @Size(min = 3, max = 10, message = "Mã khách hàng có 3 kí tự trở lên, tối đa 10 kí tự")
     private String customerId;
 
-    @Column(name ="Ma phong", nullable = false, length = 6)
+    @Column(name ="room_id", nullable = false, length = 6)
     @NotNull(message = "Mã phòng không được để trống")
     @Size(min = 3, max = 10, message = "Mã phòng có 3 kí tự trở lên, tối đa 10 kí tự")
     private String roomId;
