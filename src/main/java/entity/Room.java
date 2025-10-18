@@ -48,7 +48,7 @@ public class Room {
     @Column(name = "room_price", nullable = false, precision = 10, scale = 2)
     @NotNull(message = "Giá phòng không được để trống")
     @Positive(message = "Giá phòng phải lớn hơn 0")
-    private Double roomPrice;
+    private BigDecimal roomPrice;
 
     @Column(name = "room_amenities", length = 255, nullable = true)
     private String roomAmenities;

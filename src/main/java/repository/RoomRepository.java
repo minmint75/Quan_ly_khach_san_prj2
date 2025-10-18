@@ -32,7 +32,7 @@ public interface RoomRepository extends JpaRepository<Room, String> {
                              @Param("roomFloor") Integer roomFloor);
 
     @Query("SELECT r FROM Room r ORDER BY r.roomId DESC")
-    List<Room> findAllRoomsByIdDesc();
+    List<Room> cfindAllRoomsByIdDes();
 
     Page<Room> findAll(Pageable pageable);
 
