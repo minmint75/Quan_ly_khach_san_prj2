@@ -39,4 +39,3 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
                                          @Param("phoneNumber") String phoneNumber,
                                          Pageable pageable);
 }
-

@@ -12,6 +12,6 @@ public interface BookingService {
     Booking saveBooking(Booking bookingId);
     Booking updateBooking(String bookingId, Booking updateBooking);
     void deleteBookingById(String bookingId);
-    List<Booking> searchBookings(String bookingId, String customerId, String roomId);
+    List<Booking> searchBookings(String bookingId, String customerId, Booking.BookingStatus status);
     Page<Booking> getAllBookings(Pageable pageable);
 }
