@@ -38,7 +38,7 @@ public class Room {
     @Enumerated(EnumType.STRING)
     @Column(name = "room_type", nullable = false)
     @NotNull(message = "Loại phòng không được để trống")
-    private RoomType roomType;
+    private String roomType;
 
     @Column(name = "room_floor", nullable = false, unique=true)
     @NotNull(message = "Tầng phòng không được để trống")
@@ -48,14 +48,14 @@ public class Room {
     @Column(name = "room_price", nullable = false, precision = 10, scale = 2)
     @NotNull(message = "Giá phòng không được để trống")
     @Positive(message = "Giá phòng phải lớn hơn 0")
-    private BigDecimal roomPrice;
+    private Double roomPrice;
 
     @Column(name = "room_amenities", length = 255, nullable = true)
     private String roomAmenities;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "room_status", nullable = false)
-    private RoomStatus roomStatus;
+    private String roomStatus;
 
     @Column(name = "image_url")
     private String imageUrl;
