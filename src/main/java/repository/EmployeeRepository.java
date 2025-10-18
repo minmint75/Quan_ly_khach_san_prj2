@@ -21,8 +21,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Optional<Employee> findByRole(String role);
 
-
-    // --- Lọc danh sách nhân viên theo các tiêu chí ---
     @Query("SELECT new entity.Employee(e.employeeId, e.name, e.role, e.phoneNumber, e.email, e.shift, e.salary, e.employeeStatus) " +
             "FROM Employee e WHERE " +
             "(:name IS NULL OR :name = '' OR e.name = :name) AND " +
@@ -35,10 +33,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
                                  @Param("role") String role,
                                  @Param("shift") String shift,
                                  @Param("employeeStatus") String employeeStatus,
-                                 @Param("phoneNumber") String phoneNumber);
+                                 @Param("phoneNumber") int phoneNumber);
 
 
-    // --- Lọc có phân trang (hiển thị danh sách nhân viên đầy đủ 8 thuộc tính) ---
     @Query("SELECT new entity.Employee(e.employeeId, e.name, e.role, e.phoneNumber, e.email, e.shift, e.salary, e.employeeStatus) " +
             "FROM Employee e WHERE " +
             "(:name IS NULL OR e.name = :name) AND " +
@@ -50,6 +47,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
                                          @Param("role") String role,
                                          @Param("shift") String shift,
                                          @Param("employeeStatus") String employeeStatus,
-                                         @Param("phoneNumber") String phoneNumber,
+                                         @Param("phoneNumber") int phoneNumber,
                                          Pageable pageable);
 }

@@ -12,7 +12,7 @@ public class EmployeeSearchRequest {
     private String name;
     private String role;
     private String email;
-    private String phoneNumber;
+    private int phoneNumber;
     private String shift;
     private Double salary;
     private String employeeStatus;
