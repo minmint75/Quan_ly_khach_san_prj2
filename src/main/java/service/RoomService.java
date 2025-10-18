@@ -16,5 +16,5 @@ public interface RoomService {
     List<Room> searchRooms(String roomNumber, String roomType, int roomFloor);
     List<Room> getAvailableRooms();
     Page<Room> getAllRooms(Pageable pageable);
-    Page<Room> searchRooms(Pageable pageable, String roomNumber, String roomType, int roomFloor);
+    Page<Room> searchRoomsPageable(Pageable pageable, String roomNumber, String roomType, int roomFloor);
 }

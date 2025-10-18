@@ -26,7 +26,7 @@ public class EmployeeRequest {
         Employee employee = new Employee();
         employee.setEmployeeId(this.employeeId);
         employee.setName(this.name);
-        employee.setPosition(this.position);
+        employee.setRole(this.position);
         employee.setPhoneNumber(this.phoneNumber);
         employee.setEmail(this.email);
         employee.setShift(this.shift);
@@ -40,7 +40,7 @@ public class EmployeeRequest {
         EmployeeRequest request = new EmployeeRequest();
         request.setEmployeeId(employee.getEmployeeId());
         request.setName(employee.getName());
-        request.setPosition(employee.getPosition());
+        request.setPosition(employee.getRole());
         request.setPhoneNumber(employee.getPhoneNumber());
         request.setEmail(employee.getEmail());
         request.setShift(employee.getShift());

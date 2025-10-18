@@ -29,7 +29,7 @@ public class EmployeeSearchRequest {
     public boolean hasFilters() {
         return ((name != null && !name.trim().isEmpty()) ||
                 (role != null && !role.trim().isEmpty()) ||
-                (email != null && !email.trim().isEmpty());
+                (email != null && !email.trim().isEmpty()));
     }
 
     // --- Lấy hướng sắp xếp ---
