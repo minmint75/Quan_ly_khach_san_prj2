@@ -27,14 +27,9 @@ public class EmployeeSearchRequest {
 
     // --- Kiểm tra có điều kiện lọc không ---
     public boolean hasFilters() {
-        return (employeeId != null && !employeeId.trim().isEmpty()) ||
-                (name != null && !name.trim().isEmpty()) ||
+        return ((name != null && !name.trim().isEmpty()) ||
                 (role != null && !role.trim().isEmpty()) ||
-                (email != null && !email.trim().isEmpty()) ||
-                (phoneNumber != null && !phoneNumber.trim().isEmpty()) ||
-                (shift != null && !shift.trim().isEmpty()) ||
-                (salary != null) ||
-                (employeeStatus != null && !employeeStatus.trim().isEmpty());
+                (email != null && !email.trim().isEmpty());
     }
 
     // --- Lấy hướng sắp xếp ---
