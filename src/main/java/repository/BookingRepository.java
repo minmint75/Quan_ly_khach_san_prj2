@@ -1,5 +1,6 @@
 package repository;
 
+import org.hibernate.metamodel.model.domain.internal.PathHelper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import entity.Booking;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long>{
@@ -23,15 +25,14 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
             "(:customerId IS NULL OR b.customerId = :customerId) AND " +
             "(:BookingStatus IS NULL OR b.status = :status) " +
             "ORDER BY b.roomId DESC")
-    List<Booking> findByFilters(@Param("roomId") String roomId,
+    Page<Booking> findByFilters(@Param("roomId") String roomId,
                                 @Param("customerId") String customerId,
-                                @Param("status") Booking.BookingStatus status);
+                                @Param("status") Booking.BookingStatus status, Pageable pageable);
 
     @Query("SELECT b FROM Booking b ORDER BY b.roomId DESC")
-    List<Booking> findAllOrderByIdDesc();
+    Optional<Booking> findAllOrderByIdDesc();
 
-    Page<Booking> findAll(Pageable pageable);
-
+    Page<Booking> findAllPageAble(Pageable pageable);
 
     @Query("SELECT b FROM Booking b WHERE " +
             "(:roomId IS NULL OR b.roomId = :roomId) AND " +
@@ -43,4 +44,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
                                         Pageable pageable);
 
     void deleteById(String roomId);
+
+    List<Booking> findAll(String normalizedroomId, String normalizedCustomerId, Booking.BookingStatus status);
 }
