@@ -16,7 +16,7 @@ public interface CustomerService {
     Customer saveCustomer(Customer customer);
     Customer updateCustomer(String customerId, Customer updateCustomer);
     void deleteCustomerById(String customerId);
-    List<Customer> searchCustomers(String name, String identification, String phoneNumber);
-    Page<Customer> searchCustomersPageable(String name, String identification, String phoneNumber, Pageable pageable);
+    List<Customer> searchCustomers(String name, String identification, int phoneNumber);
+    Page<Customer> searchCustomersPageable(String name, String identification, int phoneNumber, Pageable pageable);
     Page<Customer> getAllCustomers(Pageable pageable);
 }
