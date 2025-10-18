@@ -18,7 +18,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Optional<Customer> findByidentification(String identification);
 
-    Optional<Customer> findByemail(String email);
+    Optional<Customer> findByphoneNumber(String phoneNumber);
 
     @Query("SELECT c FROM Customer c WHERE " +
             "(:name IS NULL OR :name = '' OR c.name = :name) AND " +
