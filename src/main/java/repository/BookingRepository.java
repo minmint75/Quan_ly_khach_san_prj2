@@ -12,35 +12,35 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long>{
-    List<Booking> findByBookingIdIgnoreCase(String bookingId);
+    List<Booking> findByroomIdIgnoreCase(String roomId);
 
     List<Booking> findByCustomerIdIgnoreCase(String customerId);
 
     List<Booking> findByBookingStatus(Booking.BookingStatus status);
 
     @Query("SELECT b FROM Booking b WHERE " +
-            "(:bookingId IS NULL OR b.bookingId = :bookingId) AND " +
+            "(:roomId IS NULL OR b.roomId = :roomId) AND " +
             "(:customerId IS NULL OR b.customerId = :customerId) AND " +
             "(:BookingStatus IS NULL OR b.status = :status) " +
-            "ORDER BY b.bookingId DESC")
-    List<Booking> findByFilters(@Param("bookingId") String bookingId,
+            "ORDER BY b.roomId DESC")
+    List<Booking> findByFilters(@Param("roomId") String roomId,
                                 @Param("customerId") String customerId,
                                 @Param("status") Booking.BookingStatus status);
 
-    @Query("SELECT b FROM Booking b ORDER BY b.bookingId DESC")
+    @Query("SELECT b FROM Booking b ORDER BY b.roomId DESC")
     List<Booking> findAllOrderByIdDesc();
 
     Page<Booking> findAll(Pageable pageable);
 
 
     @Query("SELECT b FROM Booking b WHERE " +
-            "(:bookingId IS NULL OR b.bookingId = :bookingId) AND " +
+            "(:roomId IS NULL OR b.roomId = :roomId) AND " +
             "(:customerId IS NULL OR b.customerId = :customerId) AND " +
             "(:BookingStatus IS NULL OR b.status = :status)")
-    Page<Booking> findByFiltersPageable(@Param("bookingId") String bookingId,
+    Page<Booking> findByFiltersPageable(@Param("roomId") String roomId,
                                         @Param("customerId") String customerId,
                                         @Param("status") Booking.BookingStatus status,
                                         Pageable pageable);
 
-    void deleteById(String bookingId);
+    void deleteById(String roomId);
 }
