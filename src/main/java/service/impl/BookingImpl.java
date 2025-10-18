@@ -11,6 +11,7 @@ import repository.BookingRepository;
 import service.BookingService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class BookingImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Booking> getBookingById(String bookingId) {
+    public Optional<Booking> getBookingById(String bookingId) {
         log.info("Lấy thông tin đặt phòng với ID: " + bookingId);
         return bookingRepository.findAllOrderByIdDesc();
     }
@@ -51,21 +52,33 @@ public class BookingImpl implements BookingService {
         bookingRepository.deleteById(bookingId);
     }
 
-    @Override
     @Transactional(readOnly = true)
-    public List<Booking> searchBookings(String roomId, String customerId, Booking.BookingStatus status) {
+    @Override
+    public Page<Booking> searchBookingsPageable(String roomId, String customerId, Booking.BookingStatus status, Pageable pageable) {
+        String normalizedroomId = (roomId != null && !roomId.trim().isEmpty()) ? roomId.trim() : null;
+        String normalizedCustomerId = (customerId != null && !customerId.trim().isEmpty()) ? customerId.trim() : null;
+
+        log.info("Tìm kiếm đặt phòng - roomId: {}, customerId: {}, BookingStatus: {}, phân trang: {}",
+                normalizedroomId, normalizedCustomerId, status, pageable);
+
+        return bookingRepository.findByFilters(normalizedroomId, normalizedCustomerId, status, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Booking> searchBooking(String roomId, String customerId, Booking.BookingStatus status) {
         String normalizedroomId = (roomId != null && !roomId.trim().isEmpty()) ? roomId.trim() : null;
         String normalizedCustomerId = (customerId != null && !customerId.trim().isEmpty()) ? customerId.trim() : null;
 
         log.info("Tìm kiếm đặt phòng - roomId: {}, customerId: {}, BookingStatus: {}",
                 normalizedroomId, normalizedCustomerId, status);
 
-        return bookingRepository.findByFilters(normalizedroomId, normalizedCustomerId, status);
+        return bookingRepository.findAll(normalizedroomId, normalizedCustomerId, status);
     }
 
-    @Override
     @Transactional(readOnly = true)
-    public Page<Booking> getAllBookings(Pageable pageable) {
+    @Override
+    public Page<Booking> getAllBookingsPageable(Pageable pageable) {
         log.info("Lấy danh sách đặt phòng với phân trang: {}", pageable);
         return bookingRepository.findAll(pageable);
     }
