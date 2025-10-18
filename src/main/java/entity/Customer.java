@@ -21,7 +21,7 @@ public class Customer {
     @Column(name = "customer_id", nullable = false, length = 10)
     @NotBlank(message = "Mã khách hàng không được để trống")
     @Size(min = 3, max = 10, message = "Mã khách hàng phải có từ 3 đến 10 ký tự")
-    private String customerID;
+    private String customerId;
 
     @Column(name = "name", nullable = false, length = 100)
     @NotBlank(message = "Tên khách hàng không được để trống")
