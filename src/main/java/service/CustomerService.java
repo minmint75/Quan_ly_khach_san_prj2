@@ -19,4 +19,13 @@ public interface CustomerService {
     List<Customer> searchCustomers(String name, String identification, int phoneNumber);
     Page<Customer> searchCustomersPageable(String name, String identification, int phoneNumber, Pageable pageable);
     Page<Customer> getAllCustomers(Pageable pageable);
+
+    @Transactional(readOnly = true)
+    List<Customer> searchCustomer(String name, String identification, String phoneNumber);
+
+    @Transactional(readOnly = true)
+    List<Customer> searchCustomer(String name, String identification, int phoneNumber);
+
+    @Transactional(readOnly = true)
+    Page<Customer> getAllCustomersPageable(Pageable pageable);
 }
