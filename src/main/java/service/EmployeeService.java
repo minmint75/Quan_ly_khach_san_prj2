@@ -13,6 +13,6 @@ public interface EmployeeService {
     Employee updateEmployee(Long id, Employee updatedEmployee);
     void deleteEmployeeById(Long id);
     List<Employee> searchEmployees(String name, String role, String email);
-    Page<Employee> getAllEmployees(Pageable pageable);
+    Page<Employee> getAllEmployeesPageable(Pageable pageable);
     Page<Employee> sortEmployees(String sortBy, boolean ascending, Pageable pageable);
 }
