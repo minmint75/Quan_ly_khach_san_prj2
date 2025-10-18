@@ -11,6 +11,7 @@ import repository.RoomRepository;
 import service.RoomService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public Option<Room> getRoomById(String roomId) {
+    public Optional<Room> getRoomById(String roomId) {
         log.info("Lấy thông tin phòng với ID: {}", roomId);
         return roomRepository.findById(roomId);
     }
@@ -79,7 +80,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Room> searchRooms(String roomNumber, String roomType, Integer roomFloor, Pageable pageable) {
+    public Page<Room> searchRoomsPageable(String roomNumber, String roomType, Integer roomFloor, Pageable pageable) {
         String normalizedRoomNumber = (roomNumber != null && !roomNumber.trim().isEmpty()) ? roomNumber.trim() : null;
         String normalizedRoomType = (roomType != null && !roomType.trim().isEmpty()) ? roomType.trim() : null;
 

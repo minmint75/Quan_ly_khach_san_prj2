@@ -66,7 +66,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     // 7. Phân trang danh sách nhân viên
     @Override
-    public Page<Employee> getAllEmployees(Pageable pageable) {
+    public Page<Employee> getAllEmployeesPageable(Pageable pageable) {
         return employeeRepository.findAll(pageable);
     }
 
