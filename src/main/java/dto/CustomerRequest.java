@@ -20,10 +20,7 @@ public class CustomerRequest {
 
 
     public Customer toEntity() {
-        // Khởi tạo Entity Customer mới
         Customer customer = new Customer();
-
-        // Ánh xạ các trường từ DTO sang Entity
         customer.setCustomerId(this.customerId);
         customer.setName(this.name);
         customer.setIdentification(this.identification);
