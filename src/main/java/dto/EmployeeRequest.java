@@ -15,7 +15,7 @@ public class EmployeeRequest {
     private String employeeId;
     private String name;
     private String position;
-    private String phoneNumber;
+    private int phoneNumber;
     private String email;
     private String shift;
     private BigDecimal salary;
