@@ -18,7 +18,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     List<Customer> findByIdentification(String identification);
 
-    List<Customer> findByPhoneNumber(String phoneNumber);
+    List<Customer> findByPhoneNumber(int phoneNumber);
 
     @Query("SELECT c FROM Customer c WHERE " +
             "(:name IS NULL OR :name = '' OR LOWER(c.name) LIKE CONCAT('%', LOWER(:name), '%')) AND " +
@@ -27,7 +27,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             "ORDER BY c.name DESC")
     Page<Customer> findByFilters(@Param("name") String name,
                                  @Param("identification") String identification,
-                                 @Param("phoneNumber") String phoneNumber,
+                                 @Param("phoneNumber") int phoneNumber,
                                  Pageable pageable);
 
     Optional<Customer> findFirstByOrderByCustomerIdDesc();
@@ -40,7 +40,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             "(:phoneNumber IS NULL OR :phoneNumber = '' OR c.phoneNumber = :phoneNumber)")
     Page<Customer> findByFiltersPageable(@Param("name") String name,
                                          @Param("identification") String identification,
-                                         @Param("phoneNumber") String phoneNumber,
+                                         @Param("phoneNumber") int phoneNumber,
                                          Pageable pageable);
 
     void deleteById(Long customerId);
