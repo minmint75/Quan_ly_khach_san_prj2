@@ -1,14 +1,15 @@
 package repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import entity.Room;
 
-import java.util.List;
+import entity.Room;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, String> {
@@ -32,7 +33,7 @@ public interface RoomRepository extends JpaRepository<Room, String> {
                              @Param("roomFloor") Integer roomFloor);
 
     @Query("SELECT r FROM Room r ORDER BY r.roomId DESC")
-    List<Room> cfindAllRoomsByIdDes();
+    List<Room> findAllRoomsByIdDesc();
 
     Page<Room> findAll(Pageable pageable);
 
