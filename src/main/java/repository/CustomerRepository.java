@@ -16,9 +16,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Optional<Customer> findByname(String name);
 
-    Optional<Customer> findByCitizenID(String identification);
+    Optional<Customer> findByidentification(String identification);
 
-    Optional<Customer> findByEmail(String email);
+    Optional<Customer> findByphoneNumber(String phoneNumber);
 
     @Query("SELECT c FROM Customer c WHERE " +
             "(:name IS NULL OR :name = '' OR c.name = :name) AND " +
@@ -26,7 +26,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             "(:phoneNumber IS NULL OR :phoneNumber = '' OR c.phoneNumber = :phoneNumber) " +
             "ORDER BY c.name DESC")
     List<Customer> findByFilters(@Param("name") String name,
-                                 @Param("identification") String citizenID,
+                                 @Param("identification") String identification,
                                  @Param("phoneNumber") String phoneNumber);
 
     @Query("SELECT c FROM Customer c WHERE" +
