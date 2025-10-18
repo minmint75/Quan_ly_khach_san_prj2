@@ -36,7 +36,7 @@ public class CustomerImpl implements CustomerService {
 
     @Override
     public Customer saveCustomer(Customer customer) {
-        log.info("Thêm đặt khách hàng mới với mã: " + customer.getId());
+        log.info("Thêm đặt khách hàng mới với mã: " + customer);
         return customerRepository.save(customer);
     }
 
@@ -52,25 +52,40 @@ public class CustomerImpl implements CustomerService {
         customerRepository.deleteById(customerId);
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public Page<Customer> searchCustomersPageable(String name, String identification, String phoneNumber, Pageable pageable) {
-        String normalizedName = (name != null && !name.trim().isEmpty()) ? name.trim() : null;
-        String normalizedIdentification = (identification != null && !identification.trim().isEmpty()) ? identification.trim() : null;
-        String normalizedPhoneNumber = (phoneNumber != null && !phoneNumber.trim().isEmpty()) ? phoneNumber.trim() : null;
-
-        log.info("Tìm kiếm khách hàng - name: {}, identification: {}, phoneNumber: {}, phân trang: {}",
-                normalizedName, normalizedIdentification, normalizedPhoneNumber, pageable);
-
-        return customerRepository.findByFilters(normalizedName, normalizedIdentification, normalizedPhoneNumber, pageable);
+    public List<Customer> searchCustomers(String name, String identification, int phoneNumber) {
+        return List.of();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Customer> searchCustomer(String name, String identification, String phoneNumber) {
+    public Page<Customer> searchCustomersPageable(String name, String identification, int phoneNumber, Pageable pageable) {
         String normalizedName = (name != null && !name.trim().isEmpty()) ? name.trim() : null;
         String normalizedIdentification = (identification != null && !identification.trim().isEmpty()) ? identification.trim() : null;
-        String normalizedPhoneNumber = (phoneNumber != null && !phoneNumber.trim().isEmpty()) ? phoneNumber.trim() : null;
+        Integer normalizedPhoneNumber = (phoneNumber > 0) ? phoneNumber : null;
+
+        log.info("Tìm kiếm khách hàng - name: {}, identification: {}, phoneNumber: {}, phân trang: {}",
+                normalizedName, normalizedIdentification, normalizedPhoneNumber, pageable);
+
+        return customerRepository.findByFiltersPageable(normalizedName, normalizedIdentification, normalizedPhoneNumber, pageable);
+    }
+
+    @Override
+    public Page<Customer> getAllCustomers(Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public List<Customer> searchCustomer(String name, String identification, String phoneNumber) {
+        return List.of();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Customer> searchCustomer(String name, String identification, int phoneNumber) {
+        String normalizedName = (name != null && !name.trim().isEmpty()) ? name.trim() : null;
+        String normalizedIdentification = (identification != null && !identification.trim().isEmpty()) ? identification.trim() : null;
+        Integer normalizedPhoneNumber = (phoneNumber > 0) ? phoneNumber : null;
 
         log.info("Tìm kiếm khách hàng - name: {}, identification: {}, phoneNumber: {}",
                 normalizedName, normalizedIdentification, normalizedPhoneNumber);

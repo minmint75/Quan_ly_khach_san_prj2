@@ -25,10 +25,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             "(:identification IS NULL OR :identification = '' OR c.identification = :identification) AND " +
             "(:phoneNumber IS NULL OR :phoneNumber = '' OR c.phoneNumber = :phoneNumber) " +
             "ORDER BY c.name DESC")
-    Page<Customer> findByFilters(@Param("name") String name,
+    List<Customer> findByFilters(@Param("name") String name,
                                  @Param("identification") String identification,
-                                 @Param("phoneNumber") int phoneNumber,
-                                 Pageable pageable);
+                                 @Param("phoneNumber") int phoneNumber
+                                 );
 
     Optional<Customer> findFirstByOrderByCustomerIdDesc();
 
@@ -45,4 +45,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     void deleteById(String customerId);
     List<Customer> findAll();
+
+    Optional<Customer> findById(String customerId);
+
 }
