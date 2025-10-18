@@ -12,7 +12,7 @@ public class CustomerSearchRequest {
     // Search filters
     private String name;
     private String identification;
-    private String phoneNumber;
+    private int phoneNumber;
 
     // Pagination
     private int page = 0;
