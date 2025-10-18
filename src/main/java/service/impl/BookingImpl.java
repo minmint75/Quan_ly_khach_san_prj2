@@ -53,15 +53,14 @@ public class BookingImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Booking> searchBookings(String bookingId, String customerId, String roomId) {
+    public List<Booking> searchBookings(String bookingId, String customerId, Booking.BookingStatus status) {
         String normalizedBookingId = (bookingId != null && !bookingId.trim().isEmpty()) ? bookingId.trim() : null;
         String normalizedCustomerId = (customerId != null && !customerId.trim().isEmpty()) ? customerId.trim() : null;
-        String normalizedRoomId = (roomId != null && !roomId.trim().isEmpty()) ? roomId.trim() : null;
 
-        log.info("Tìm kiếm đặt phòng - bookingId: {}, customerId: {}, roomId: {}",
-                normalizedBookingId, normalizedCustomerId, normalizedRoomId);
+        log.info("Tìm kiếm đặt phòng - bookingId: {}, customerId: {}, BookingStatus: {}",
+                normalizedBookingId, normalizedCustomerId, status);
 
-        return bookingRepository.findByFilters(normalizedBookingId, normalizedCustomerId, normalizedRoomId);
+        return bookingRepository.findByFilters(normalizedBookingId, normalizedCustomerId, status);
     }
 
     @Override

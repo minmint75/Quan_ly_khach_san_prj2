@@ -16,16 +16,16 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
 
     List<Booking> findByCustomerIdIgnoreCase(String customerId);
 
-    List<Booking> findByRoomIdIgnoreCase(String roomId);
+    List<Booking> findByBookingStatus(Booking.BookingStatus status);
 
     @Query("SELECT b FROM Booking b WHERE " +
             "(:bookingId IS NULL OR b.bookingId = :bookingId) AND " +
             "(:customerId IS NULL OR b.customerId = :customerId) AND " +
-            "(:roomId IS NULL OR b.roomId = :roomId) " +
+            "(:BookingStatus IS NULL OR b.status = :status) " +
             "ORDER BY b.bookingId DESC")
     List<Booking> findByFilters(@Param("bookingId") String bookingId,
                                 @Param("customerId") String customerId,
-                                @Param("roomId") String roomId);
+                                @Param("status") Booking.BookingStatus status);
 
     @Query("SELECT b FROM Booking b ORDER BY b.bookingId DESC")
     List<Booking> findAllOrderByIdDesc();
@@ -36,10 +36,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
     @Query("SELECT b FROM Booking b WHERE " +
             "(:bookingId IS NULL OR b.bookingId = :bookingId) AND " +
             "(:customerId IS NULL OR b.customerId = :customerId) AND " +
-            "(:roomId IS NULL OR b.roomId = :roomId)")
+            "(:BookingStatus IS NULL OR b.status = :status)")
     Page<Booking> findByFiltersPageable(@Param("bookingId") String bookingId,
                                         @Param("customerId") String customerId,
-                                        @Param("roomId") String roomId,
+                                        @Param("status") Booking.BookingStatus status,
                                         Pageable pageable);
 
     void deleteById(String bookingId);

@@ -16,7 +16,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Optional<Customer> findByCustomerID(String customerID);
 
-    Optional<Customer> findByCitizenID(String citizenID);
+    Optional<Customer> findByCitizenID(String identification);
 
     Optional<Customer> findByEmail(String email);
 
@@ -30,13 +30,12 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
                                  @Param("phoneNumber") String phoneNumber);
 
     @Query("SELECT c FROM Customer c WHERE" +
-                "(:customerID     IS NULL OR c.customerID     = :customerID) AND" +
-                "(:identification IS NULL OR c.identification = :identification) AND" +
-                "(:phoneNumber    IS NULL OR c.phoneNumber    = :phoneNumber)")
+            "(:customerID     IS NULL OR c.customerID     = :customerID) AND" +
+            "(:identification IS NULL OR c.identification = :identification) AND" +
+            "(:phoneNumber    IS NULL OR c.phoneNumber    = :phoneNumber)")
 
     Page<Customer> findByFiltersPageable(@Param("customerID") String customerID,
                                          @Param("identification") String identification,
                                          @Param("phoneNumber") String phoneNumber,
                                          Pageable pageable);
 }
-
