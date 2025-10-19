@@ -16,7 +16,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     List<Customer> findByName(String name);
 
-    List<Customer> findByIdentification(String identification);
+    List<Customer> findByIdentification(int identification);
 
     List<Customer> findByPhoneNumber(int phoneNumber);
 
@@ -26,7 +26,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             "(:phoneNumber IS NULL OR :phoneNumber = '' OR c.phoneNumber = :phoneNumber) " +
             "ORDER BY c.name DESC")
     List<Customer> findByFilters(@Param("name") String name,
-                                 @Param("identification") String identification,
+                                 @Param("identification") int identification,
                                  @Param("phoneNumber") int phoneNumber
                                  );
 
@@ -39,7 +39,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             "(:identification IS NULL OR :identification = '' OR c.identification = :identification) AND " +
             "(:phoneNumber IS NULL OR :phoneNumber = '' OR c.phoneNumber = :phoneNumber)")
     Page<Customer> findByFiltersPageable(@Param("name") String name,
-                                         @Param("identification") String identification,
+                                         @Param("identification") int identification,
                                          @Param("phoneNumber") int phoneNumber,
                                          Pageable pageable);
 
