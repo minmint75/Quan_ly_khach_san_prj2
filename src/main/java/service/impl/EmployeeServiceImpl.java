@@ -24,9 +24,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     // 2. Lấy nhân viên theo ID
     @Override
-    public Employee getEmployeeById(Long id) {
+    public Employee getEmployeeById(String id) {
         return employeeRepository.findById(id).orElse(null);
     }
+
+    public Optional getEmployeeByIdOptional(String id) {
+        return employeeRepository.findById(id);
+    }
+
 
     // 3. Thêm mới nhân viên
     @Override
@@ -36,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     // 4. Cập nhật nhân viên
     @Override
-    public Employee updateEmployee(Long id, Employee updatedEmployee) {
+    public Employee updateEmployee(String id, Employee updatedEmployee) {
         Optional<Employee> existing = employeeRepository.findById(id);
         if (existing.isPresent()) {
             Employee e = existing.get();
@@ -54,7 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     // 5. Xóa nhân viên theo ID
     @Override
-    public void deleteEmployeeById(Long id) {
+    public void deleteEmployeeById(String id) {
         employeeRepository.deleteById(id);
     }
 

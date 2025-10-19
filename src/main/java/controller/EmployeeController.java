@@ -31,7 +31,7 @@ public class EmployeeController {
             @RequestParam(value = "email", required = false) String email) {
 
         if (name != null || role != null || email != null) {
-            return employeeService.searchEmployee(name, role, email);
+            return employeeService.searchEmployees(name, role, email);
         }
         return employeeService.getAllEmployees();
     }
@@ -47,7 +47,7 @@ public class EmployeeController {
     // Xem chi tiết 1 nhân viên
     @GetMapping("/{id}")
     public String viewEmployee(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
-        Optional<Employee> employee = employeeService.getEmployeeById(id);
+        Optional<Employee> employee = employeeService.getEmployeeByIdOptional(id);
 
         if (employee.isPresent()) {
             model.addAttribute("employee", employee.get());
@@ -62,7 +62,7 @@ public class EmployeeController {
     @GetMapping("/api/{id}")
     @ResponseBody
     public Employee getEmployeeApi(@PathVariable String id) {
-        return employeeService.getEmployeeById(id).orElse(null);
+        return employeeService.getEmployeeById(id);
     }
 
     // === ADD FORM ===
@@ -105,7 +105,7 @@ public class EmployeeController {
     // Hiển thị form sửa nhân viên
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
-        Optional<Employee> employee = employeeService.getEmployeeById(id);
+        Optional<Employee> employee = employeeService.getEmployeeByIdOptional(id);
 
         if (employee.isPresent()) {
             EmployeeRequest employeeRequest = EmployeeRequest.fromEntity(employee.get());
