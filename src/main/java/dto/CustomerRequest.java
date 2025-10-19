@@ -12,7 +12,7 @@ public class CustomerRequest {
 
     private String customerId;
     private String name;
-    private String identification;
+    private int identification;
     private int phoneNumber;
     private String email;
     private String nationality;
