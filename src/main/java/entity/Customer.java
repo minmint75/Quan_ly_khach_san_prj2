@@ -40,7 +40,7 @@ public class Customer {
     @Column(name = "phone_number", nullable = false, length = 10)
     @NotBlank(message = "Số điện thoại không được để trống")
     @Pattern(regexp = "^(0[0-9]{9})$", message = "Số điện thoại phải có 10 số và bắt đầu bằng 0")
-    private String phoneNumber;
+    private int phoneNumber;
 
     @Column(name = "nationality", length = 50)
     private String nationality;

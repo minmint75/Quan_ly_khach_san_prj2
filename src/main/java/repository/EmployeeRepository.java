@@ -1,5 +1,6 @@
 package repository;
 
+import entity.Booking;
 import entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,34 +23,16 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Optional<Employee> findByRole(String role);
 
 
-    // --- Lọc danh sách nhân viên theo các tiêu chí ---
-    @Query("SELECT new entity.Employee(e.employeeId, e.name, e.role, e.phoneNumber, e.email, e.shift, e.salary, e.employeeStatus) " +
-            "FROM Employee e WHERE " +
-            "(:name IS NULL OR :name = '' OR e.name = :name) AND " +
-            "(:role IS NULL OR :role = '' OR e.role = :role) AND " +
-            "(:shift IS NULL OR :shift = '' OR e.shift = :shift) AND " +
-            "(:employeeStatus IS NULL OR :employeeStatus = '' OR e.employeeStatus = :employeeStatus) AND " +
-            "(:phoneNumber IS NULL OR :phoneNumber = '' OR e.phoneNumber = :phoneNumber) " +
-            "ORDER BY e.name ASC")
-    List<Employee> findByFilters(@Param("name") String name,
-                                 @Param("role") String role,
-                                 @Param("shift") String shift,
-                                 @Param("employeeStatus") String employeeStatus,
-                                 @Param("phoneNumber") String phoneNumber);
-
-
-    // --- Lọc có phân trang (hiển thị danh sách nhân viên đầy đủ 8 thuộc tính) ---
-    @Query("SELECT new entity.Employee(e.employeeId, e.name, e.role, e.phoneNumber, e.email, e.shift, e.salary, e.employeeStatus) " +
-            "FROM Employee e WHERE " +
+    // --- Tìm kiếm nhân viên theo các tiêu chí ---
+    @Query("SELECT e FROM Employee e WHERE " +
             "(:name IS NULL OR e.name = :name) AND " +
             "(:role IS NULL OR e.role = :role) AND " +
-            "(:shift IS NULL OR e.shift = :shift) AND " +
-            "(:employeeStatus IS NULL OR e.employeeStatus = :employeeStatus) AND " +
-            "(:phoneNumber IS NULL OR e.phoneNumber = :phoneNumber)")
-    Page<Employee> findByFiltersPageable(@Param("name") String name,
-                                         @Param("role") String role,
-                                         @Param("shift") String shift,
-                                         @Param("employeeStatus") String employeeStatus,
-                                         @Param("phoneNumber") String phoneNumber,
-                                         Pageable pageable);
+            "(:email IS NULL OR e.email = :email) ")
+    List<Employee> findByFilters(@Param("name") String name,
+                                @Param("role") String role,
+                                @Param("email") String email
+    );
+
+
+
 }

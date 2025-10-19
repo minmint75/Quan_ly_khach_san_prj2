@@ -24,6 +24,7 @@ public class BookingSearchRequest {
         return (roomId != null && !roomId.trim().isEmpty()) && (customerId != null && !customerId.trim().isEmpty()) &&
         status != null;
     }
+
     public String getSortDirection() {
         return "asc".equalsIgnoreCase(direction) ? "asc" : "desc";
     }
