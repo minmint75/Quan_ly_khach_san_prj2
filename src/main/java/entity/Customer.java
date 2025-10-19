@@ -35,7 +35,7 @@ public class Customer {
     @Column(name = "identification", nullable = false, length = 12)
     @NotBlank(message = "CCCD không được để trống")
     @Pattern(regexp = "^[0-9]{12}$", message = "CCCD phải là 12 chữ số")
-    private String identification;
+    private int identification;
 
     @Column(name = "phone_number", nullable = false, length = 10)
     @NotBlank(message = "Số điện thoại không được để trống")
