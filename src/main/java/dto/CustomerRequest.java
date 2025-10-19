@@ -18,6 +18,9 @@ public class CustomerRequest {
     private String nationality;
     private String address;
 
+    public static CustomerRequest fromEntity(Customer customer) {
+        return null;
+    }
 
     public Customer toEntity() {
         Customer customer = new Customer();
