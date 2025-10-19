@@ -1,20 +1,28 @@
 package controller;
 
-import dto.RoomRequest;
-import entity.Room;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import dto.RoomRequest;
+import entity.Room;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import service.FileUploadService;
 import service.RoomService;
-
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -82,9 +90,9 @@ public class RoomController {
 
     // === ADD HANDLER ===
     @PostMapping("/add")
-    public String addRoom(@ModelAttribute("roomRequest") RoomRequest roomRequest,
-                          @RequestParam("imageFile") MultipartFile imageFile,
+    public String addRoom(@Valid @ModelAttribute("roomRequest") RoomRequest roomRequest,
                           BindingResult bindingResult,
+                          @RequestParam("imageFile") MultipartFile imageFile,
                           Model model,
                           RedirectAttributes redirectAttributes) {
 
@@ -101,7 +109,7 @@ public class RoomController {
 
             // Handle file upload
             if (!imageFile.isEmpty()) {
-                String imageUrl = fileUploadService.storeFile(imageFile);
+                String imageUrl = fileUploadService.uploadFile(imageFile);
                 room.setImageUrl(imageUrl);
             }
 
@@ -137,9 +145,9 @@ public class RoomController {
     // === EDIT HANDLER ===
     @PostMapping("/edit/{id}")
     public String updateRoom(@PathVariable String id,
-                             @ModelAttribute("roomRequest") RoomRequest roomRequest,
-                             @RequestParam("imageFile") MultipartFile imageFile,
+                             @Valid @ModelAttribute("roomRequest") RoomRequest roomRequest,
                              BindingResult bindingResult,
+                             @RequestParam("imageFile") MultipartFile imageFile,
                              Model model,
                              RedirectAttributes redirectAttributes) {
 
@@ -157,7 +165,7 @@ public class RoomController {
 
             // Handle file upload
             if (!imageFile.isEmpty()) {
-                String imageUrl = fileUploadService.storeFile(imageFile);
+                String imageUrl = fileUploadService.uploadFile(imageFile);
                 room.setImageUrl(imageUrl);
             } else {
                 // Keep the old image if no new one is uploaded
