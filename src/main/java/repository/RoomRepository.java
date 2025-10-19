@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import entity.Room;
+import entity.Room.RoomType;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, String> {
@@ -20,7 +21,7 @@ public interface RoomRepository extends JpaRepository<Room, String> {
 
     List<Room> findByRoomFloor(int roomFloor);
 
-    @Query("SELECT r FROM Room r WHERE r.status = 'AVAILABLE' ORDER BY r.roomId, r.roomNumber")
+    @Query("SELECT r FROM Room r WHERE r.roomStatus = 'AVAILABLE' ORDER BY r.roomId, r.roomNumber")
     List <Room> findAvailableRoom();
 
     @Query("SELECT r FROM Room r WHERE " +
@@ -29,7 +30,7 @@ public interface RoomRepository extends JpaRepository<Room, String> {
             "(:roomFloor IS NULL OR r.roomFloor = :roomFloor) " +
             "ORDER BY r.roomId DESC")
     List<Room> findByFilters(@Param("roomNumber") String roomNumber,
-                             @Param("roomType") String roomType,
+                             @Param("roomType") RoomType roomType,
                              @Param("roomFloor") Integer roomFloor);
 
     @Query("SELECT r FROM Room r ORDER BY r.roomId DESC")
@@ -42,7 +43,7 @@ public interface RoomRepository extends JpaRepository<Room, String> {
             "(:roomType IS NULL OR r.roomType = :roomType) AND " +
             "(:roomFloor IS NULL OR r.roomFloor = :roomFloor)")
     Page<Room> findByFiltersPageable(@Param("roomNumber") String roomNumber,
-                                     @Param("roomType") String roomType,
+                                     @Param("roomType") RoomType roomType,
                                      @Param("roomFloor") Integer roomFloor,
                                      Pageable pageable);                               
 

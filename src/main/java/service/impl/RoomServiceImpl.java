@@ -1,17 +1,18 @@
 package service.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import entity.Room;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import repository.RoomRepository;
 import service.RoomService;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,12 +57,11 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Room> searchRooms(String roomNumber, String roomType, Integer roomFloor) {
+    public List<Room> searchRooms(String roomNumber, Room.RoomType roomType, int roomFloor) {
         String normalizedRoomNumber = (roomNumber != null && !roomNumber.trim().isEmpty()) ? roomNumber.trim() : null;
-        String normalizedRoomType = (roomType != null && !roomType.trim().isEmpty()) ? roomType.trim() : null;
 
-        log.info("Tìm kiếm phòng - roomNumber: {}, roomType: {}, roomFloor: {}", normalizedRoomNumber, normalizedRoomType, roomFloor);
-        return roomRepository.findByFilters(normalizedRoomNumber, normalizedRoomType, roomFloor);
+        log.info("Tìm kiếm phòng - roomNumber: {}, roomType: {}, roomFloor: {}", normalizedRoomNumber, roomType, roomFloor);
+        return roomRepository.findByFilters(normalizedRoomNumber, roomType, roomFloor);
     }
 
     @Override
@@ -80,12 +80,11 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Room> searchRoomsPageable(String roomNumber, String roomType, Integer roomFloor, Pageable pageable) {
+    public Page<Room> searchRooms(Pageable pageable, String roomNumber, Room.RoomType roomType, int roomFloor) {
         String normalizedRoomNumber = (roomNumber != null && !roomNumber.trim().isEmpty()) ? roomNumber.trim() : null;
-        String normalizedRoomType = (roomType != null && !roomType.trim().isEmpty()) ? roomType.trim() : null;
 
         log.info("Tìm kiếm phòng với phân trang - Số phòng: {}, Loại phòng: {}, Tầng phòng: {}, Phân trang: {}",
-                normalizedRoomNumber, normalizedRoomType, roomFloor, pageable);
-        return roomRepository.findByFilters(normalizedRoomNumber, normalizedRoomType, roomFloor, pageable);
+                normalizedRoomNumber, roomType, roomFloor, pageable);
+        return roomRepository.findByFiltersPageable(normalizedRoomNumber, roomType, roomFloor, pageable);
     }
 }

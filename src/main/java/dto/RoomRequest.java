@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 public class RoomRequest {
     private String roomId;
     private String roomNumber;
-    private String roomType;
+    private Room.RoomType roomType;
     private int roomFloor;
     private BigDecimal roomPrice;
     private String roomAmenities;
-    private String roomStatus;
+    private Room.RoomStatus roomStatus;
     private MultipartFile imageFile;
 
     // Convert to MenuItem entity
@@ -63,7 +63,11 @@ public class RoomRequest {
     }
 
     public boolean hasRoomType() {
-        return roomType != null && !roomType.trim().isEmpty();
+        return roomType != null;
+    }
+
+    public boolean hasRoomStatus() {
+        return roomStatus != null;
     }
 
     public boolean hasRoomFloor() {
