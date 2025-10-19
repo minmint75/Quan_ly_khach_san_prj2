@@ -11,7 +11,7 @@ public class CustomerSearchRequest {
 
     // Search filters
     private String name;
-    private String identification;
+    private int identification;
     private int phoneNumber;
 
     // Pagination
@@ -25,8 +25,8 @@ public class CustomerSearchRequest {
     // Helper methods
     public boolean hasFilters() {
         return (name != null && !name.trim().isEmpty()) ||
-                (identification != null && !identification.trim().isEmpty()) ||
-                (phoneNumber != null && !phoneNumber.trim().isEmpty());
+                phoneNumber > 0 ||
+                identification > 0;
     }
 
     public String getSortDirection() {

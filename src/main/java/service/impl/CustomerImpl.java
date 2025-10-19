@@ -53,15 +53,15 @@ public class CustomerImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> searchCustomers(String name, String identification, int phoneNumber) {
+    public List<Customer> searchCustomers(String name, int identification, int phoneNumber) {
         return List.of();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Customer> searchCustomersPageable(String name, String identification, int phoneNumber, Pageable pageable) {
+    public Page<Customer> searchCustomersPageable(String name, int identification, int phoneNumber, Pageable pageable) {
         String normalizedName = (name != null && !name.trim().isEmpty()) ? name.trim() : null;
-        String normalizedIdentification = (identification != null && !identification.trim().isEmpty()) ? identification.trim() : null;
+        Integer normalizedIdentification = (identification > 0) ? identification : null;
         Integer normalizedPhoneNumber = (phoneNumber > 0) ? phoneNumber : null;
 
         log.info("Tìm kiếm khách hàng - name: {}, identification: {}, phoneNumber: {}, phân trang: {}",
@@ -76,15 +76,16 @@ public class CustomerImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> searchCustomer(String name, String identification, String phoneNumber) {
+    public List<Customer> searchCustomers(String name, String identification, int phoneNumber) {
         return List.of();
     }
 
+
     @Transactional(readOnly = true)
     @Override
-    public List<Customer> searchCustomer(String name, String identification, int phoneNumber) {
+    public List<Customer> searchCustomersPageable(String name, int identification, int phoneNumber) {
         String normalizedName = (name != null && !name.trim().isEmpty()) ? name.trim() : null;
-        String normalizedIdentification = (identification != null && !identification.trim().isEmpty()) ? identification.trim() : null;
+        Integer normalizedIdentification = (identification > 0) ? identification : null;
         Integer normalizedPhoneNumber = (phoneNumber > 0) ? phoneNumber : null;
 
         log.info("Tìm kiếm khách hàng - name: {}, identification: {}, phoneNumber: {}",
