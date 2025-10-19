@@ -1,6 +1,5 @@
 package service;
 
-import entity.Booking;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import entity.Customer;
@@ -26,4 +25,7 @@ public interface CustomerService {
     List<Customer> searchCustomersPageable(String name, int identification, int phoneNumber);
 
     Page<Customer> getAllCustomersPageable(Pageable pageable);
+
+    List<Customer> searchCustomer(String name, int email, int phone);
+
 }
