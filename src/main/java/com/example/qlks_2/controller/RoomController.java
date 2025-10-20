@@ -3,6 +3,9 @@ package com.example.qlks_2.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -92,7 +96,7 @@ public class RoomController {
     @PostMapping("/add")
     public String addRoom(@Valid @ModelAttribute("roomRequest") RoomRequest roomRequest,
                           BindingResult bindingResult,
-                          @RequestParam("imageFile") MultipartFile imageFile,
+                          @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                           Model model,
                           RedirectAttributes redirectAttributes) {
 
@@ -108,7 +112,7 @@ public class RoomController {
             Room room = roomRequest.toEntity();
 
             // Handle file upload
-            if (!imageFile.isEmpty()) {
+            if (imageFile != null && !imageFile.isEmpty()) {
                 String imageUrl = fileUploadService.uploadFile(imageFile);
                 room.setImageUrl(imageUrl);
             }
@@ -147,7 +151,7 @@ public class RoomController {
     public String updateRoom(@PathVariable Long id,
                              @Valid @ModelAttribute("roomRequest") RoomRequest roomRequest,
                              BindingResult bindingResult,
-                             @RequestParam("imageFile") MultipartFile imageFile,
+                             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                              Model model,
                              RedirectAttributes redirectAttributes) {
 
@@ -164,7 +168,7 @@ public class RoomController {
             room.setRoomId(id);
 
             // Handle file upload
-            if (!imageFile.isEmpty()) {
+            if (imageFile != null && !imageFile.isEmpty()) {
                 String imageUrl = fileUploadService.uploadFile(imageFile);
                 room.setImageUrl(imageUrl);
             } else {
@@ -195,5 +199,68 @@ public class RoomController {
             redirectAttributes.addFlashAttribute("error", "Có lỗi xảy ra khi xóa phòng!");
         }
         return "redirect:/rooms";
+    }
+
+    // === API ADD (JSON/multipart) ===
+    @PostMapping(value = "/api/add", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @ResponseBody
+    public ResponseEntity<?> apiAddRoom(
+            @ModelAttribute RoomRequest roomRequest,
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
+        try {
+            Room room = roomRequest.toEntity();
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String imageUrl = fileUploadService.uploadFile(imageFile);
+                room.setImageUrl(imageUrl);
+            }
+            Room saved = roomService.saveRoom(room);
+            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            log.warn("Duplicate roomNumber", e);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Room number already exists");
+        } catch (Exception e) {
+            log.error("API add room error", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add room");
+        }
+    }
+
+    // === API EDIT (JSON/multipart) ===
+    @PostMapping(value = "/api/edit/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @ResponseBody
+    public ResponseEntity<?> apiEditRoom(
+            @PathVariable Long id,
+            @ModelAttribute RoomRequest roomRequest,
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
+        try {
+            Room room = roomRequest.toEntity();
+            room.setRoomId(id);
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String imageUrl = fileUploadService.uploadFile(imageFile);
+                room.setImageUrl(imageUrl);
+            } else {
+                roomService.getRoomById(id).ifPresent(existing -> room.setImageUrl(existing.getImageUrl()));
+            }
+            Room saved = roomService.updateRoom(id, room);
+            return ResponseEntity.ok(saved);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            log.warn("Duplicate roomNumber on update", e);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Room number already exists");
+        } catch (Exception e) {
+            log.error("API edit room error", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update room");
+        }
+    }
+
+    // === API DELETE ===
+    @PostMapping("/api/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<?> apiDeleteRoom(@PathVariable Long id) {
+        try {
+            roomService.deleteRoomById(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            log.error("API delete room error", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete room");
+        }
     }
 }
