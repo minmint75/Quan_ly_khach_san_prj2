@@ -13,6 +13,11 @@ import com.example.qlks_2.service.CustomerService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import org.springframework.core.io.ClassPathResource;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Controller
@@ -22,6 +27,29 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    // Load nationalities list from classpath file (resources/nationalities.txt) and cache it
+    private static final List<String> NATIONALITIES = loadNationalities();
+
+    private static List<String> loadNationalities() {
+        try {
+            var resource = new ClassPathResource("data/nationalities.txt");
+            try (var in = resource.getInputStream();
+                 var reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+                return reader.lines()
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .collect(Collectors.toList());
+            }
+        } catch (Exception e) {
+            return List.of("Việt Nam");
+        }
+    }
+
+    @ModelAttribute("nationalities")
+    public List<String> nationalities() {
+        return NATIONALITIES;
+    }
 
     // === API LIST ===
     @GetMapping("/api/list")

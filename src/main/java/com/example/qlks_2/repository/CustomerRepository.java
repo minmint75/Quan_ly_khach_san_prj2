@@ -1,6 +1,5 @@
 package com.example.qlks_2.repository;
 
-import com.example.qlks_2.entity.Booking;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
