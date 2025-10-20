@@ -12,7 +12,7 @@ public class RoomSearchRequest {
     //search filters
     private String roomNumber;
     private String roomType;
-    private Int roomFloor;
+    private int roomFloor;
 
     // pagination
     private int page= 0;
@@ -22,10 +22,10 @@ public class RoomSearchRequest {
     private String sortBy= "roomId";
     private String direction= "DESC";
 
-    public boolean hasFilters(){
+    public boolean hasFilers(){
         return (roomNumber != null && !roomNumber.trim().isEmpty()) ||
                (roomType != null && !roomType.trim().isEmpty()) ||
-               (roomFloor != null);
+               (roomFloor > 0);
     }
 
     public String getSortDirection() {
@@ -36,11 +36,7 @@ public class RoomSearchRequest {
     public boolean hasFilters(){
         return (roomNumber != null && !roomNumber.trim().isEmpty()) ||
                (roomType != null && !roomType.trim().isEmpty()) ||
-               (roomFloor != null);
-    }
-
-    public String getSortDirection() {
-        return "asc".equalsIgnoreCase(direction) ? "asc" : "desc";
+               (roomFloor > 0);
     }
 
     public boolean isAscending() {
