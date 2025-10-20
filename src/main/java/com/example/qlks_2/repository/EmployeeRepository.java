@@ -1,0 +1,35 @@
+package com.example.qlks_2.repository;
+
+import com.example.qlks_2.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+
+    // --- Các phương thức tìm kiếm cơ bản ---
+    Optional<Employee> findByName(String name);
+
+    Optional<Employee> findByEmail(String email);
+
+    Optional<Employee> findByRole(String role);
+
+
+    // --- Tìm kiếm nhân viên theo các tiêu chí ---
+    @Query("SELECT e FROM Employee e WHERE " +
+            "(:name IS NULL OR e.name = :name) AND " +
+            "(:role IS NULL OR e.role = :role) AND " +
+            "(:email IS NULL OR e.email = :email) ")
+    List<Employee> findByFilters(@Param("name") String name,
+                                @Param("role") String role,
+                                @Param("email") String email
+    );
+
+
+
+}
