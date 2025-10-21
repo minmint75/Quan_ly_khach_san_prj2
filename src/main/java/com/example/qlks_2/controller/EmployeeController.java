@@ -22,16 +22,24 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    // === API LIST (chỉ tìm kiếm theo tên, chức vụ, email) ===
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("roles", Employee.EmployeeRole.values());
+        model.addAttribute("shifts", Employee.EmployeeShift.values());
+        model.addAttribute("statuses", Employee.EmployeeStatus.values());
+    }
+
     @GetMapping("/api/list")
     @ResponseBody
     public List<Employee> getEmployeeApi(
             @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "role", required = false) String role,
+            @RequestParam(value = "role", required = false) Employee.EmployeeRole role,
+            @RequestParam(value = "shift", required = false) Employee.EmployeeShift shift,
+            @RequestParam(value = "status", required = false) Employee.EmployeeStatus status,
             @RequestParam(value = "email", required = false) String email) {
 
-        if (name != null || role != null || email != null) {
-            return employeeService.searchEmployees(name, role, email);
+        if (name != null || role != null || shift != null || status != null || email != null) {
+            return employeeService.searchEmployees(name, role, shift, status, email);
         }
         return employeeService.getAllEmployees();
     }
