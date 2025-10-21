@@ -22,11 +22,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.qlks_2.dto.RoomRequest;
 import com.example.qlks_2.entity.Room;
+import com.example.qlks_2.service.FileUploadService;
+import com.example.qlks_2.service.RoomService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.example.qlks_2.service.FileUploadService;
-import com.example.qlks_2.service.RoomService;
 
 @Slf4j
 @Controller
@@ -62,7 +63,7 @@ public class RoomController {
     }
 
     // === VIEW DETAIL ===
-    @GetMapping("/{id}")
+    @GetMapping("/{id:[0-9]+}")
     public String viewRoom(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<Room> room = roomService.getRoomById(id);
 
@@ -76,7 +77,7 @@ public class RoomController {
     }
     
     // === API DETAIL ===
-    @GetMapping("/api/{id}")
+    @GetMapping("/api/{id:[0-9]+}")
     @ResponseBody
     public Room getRoomApi(@PathVariable Long id) {
         return roomService.getRoomById(id).orElse(null);
