@@ -20,7 +20,6 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long billId;
 
-    // Mã booking liên kết (chỉ lưu ID, không khóa ngoại)
     @Column(name = "booking_id", nullable = false)
     @NotNull(message = "Mã booking không được để trống")
     private Long bookingId;
