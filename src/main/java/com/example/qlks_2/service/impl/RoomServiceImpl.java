@@ -41,13 +41,28 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room saveRoom(Room room) {
         log.info("Thêm phòng mới: {}", room);
-        // ensure unique roomNumber
+
         if (room.getRoomNumber() != null && !room.getRoomNumber().trim().isEmpty()) {
-            boolean exists = !roomRepository.findByRoomNumberIgnoreCase(room.getRoomNumber().trim()).isEmpty();
+            String roomNumber = room.getRoomNumber().trim();
+
+            // Automatically set floor based on room number
+            if (room.getRoomFloor() <= 0 && roomNumber.length() > 0) {
+                try {
+                    int floor = Integer.parseInt(roomNumber.substring(0, 1));
+                    room.setRoomFloor(floor);
+                    log.info("Tự động đặt tầng phòng thành: {}", floor);
+                } catch (NumberFormatException e) {
+                    log.warn("Không thể phân tích cú pháp số phòng để xác định tầng: {}", roomNumber);
+                }
+            }
+
+            // ensure unique roomNumber
+            boolean exists = !roomRepository.findByRoomNumberIgnoreCase(roomNumber).isEmpty();
             if (exists) {
-                throw new DataIntegrityViolationException("Room number already exists");
+                throw new DataIntegrityViolationException("Số phòng đã tồn tại");
             }
         }
+        
         return roomRepository.save(room);
     }
 
