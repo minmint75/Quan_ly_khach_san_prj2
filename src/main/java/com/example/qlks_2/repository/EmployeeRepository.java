@@ -22,13 +22,16 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     // --- Tìm kiếm nhân viên theo các tiêu chí ---
     @Query("SELECT e FROM Employee e WHERE " +
-            "(:name IS NULL OR e.name = :name) AND " +
+            "(:name IS NULL OR e.name LIKE %:name%) AND " +
             "(:role IS NULL OR e.role = :role) AND " +
-            "(:email IS NULL OR e.email = :email) ")
+            "(:shift IS NULL OR e.shift = :shift) AND " +
+            "(:status IS NULL OR e.employeeStatus = :status) AND " +
+            "(:email IS NULL OR e.email LIKE %:email%)")
     List<Employee> findByFilters(@Param("name") String name,
-                                @Param("role") String role,
-                                @Param("email") String email
-    );
+                                 @Param("role") Employee.EmployeeRole role,
+                                 @Param("shift") Employee.EmployeeShift shift,
+                                 @Param("status") Employee.EmployeeStatus status,
+                                 @Param("email") String email);
 
 
 

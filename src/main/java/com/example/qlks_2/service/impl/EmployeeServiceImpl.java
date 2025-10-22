@@ -65,8 +65,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     // 6. Tìm kiếm nhân viên theo Tên, Chức vụ, Email
     @Override
-    public List<Employee> searchEmployees(String name, String role, String email) {
-        return employeeRepository.findByFilters(name, role, email);
+    public List<Employee> searchEmployees(String name, Employee.EmployeeRole role, Employee.EmployeeShift shift, Employee.EmployeeStatus status, String email) {
+        return employeeRepository.findByFilters(name, role, shift, status, email);
     }
 
     // 7. Phân trang danh sách nhân viên

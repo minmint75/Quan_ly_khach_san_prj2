@@ -1,9 +1,9 @@
 package com.example.qlks_2.dto;
 
+import com.example.qlks_2.entity.Employee;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import com.example.qlks_2.entity.Employee;
 
 import java.math.BigDecimal;
 
@@ -14,18 +14,18 @@ public class EmployeeRequest {
 
     private Long employeeId;
     private String name;
-    private String position;
+    private Employee.EmployeeRole position; // Changed from String
     private int phoneNumber;
     private String email;
-    private String shift;
+    private Employee.EmployeeShift shift; // Changed from String
     private BigDecimal salary;
-    private String employeeStatus;
+    private Employee.EmployeeStatus employeeStatus; // Changed from String
 
     public Employee toEntity() {
         Employee employee = new Employee();
         employee.setEmployeeId(this.employeeId);
         employee.setName(this.name);
-        employee.setRole(this.position);
+        employee.setRole(this.position); // Maps position to role
         employee.setPhoneNumber(this.phoneNumber);
         employee.setEmail(this.email);
         employee.setShift(this.shift);
@@ -40,7 +40,7 @@ public class EmployeeRequest {
         EmployeeRequest request = new EmployeeRequest();
         request.setEmployeeId(employee.getEmployeeId());
         request.setName(employee.getName());
-        request.setPosition(employee.getRole());
+        request.setPosition(employee.getRole()); // Maps role to position
         request.setPhoneNumber(employee.getPhoneNumber());
         request.setEmail(employee.getEmail());
         request.setShift(employee.getShift());
