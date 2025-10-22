@@ -99,6 +99,7 @@ public class CustomerController {
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("customerRequest", new CustomerRequest());
+        model.addAttribute("nationality", nationalities);
         return "customer/form";
     }
 
@@ -125,6 +126,7 @@ public class CustomerController {
 
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("nationality", nationalities);
             return "customer/form";
         }
 
@@ -136,6 +138,7 @@ public class CustomerController {
         } catch (Exception e) {
             log.error("Lỗi khi thêm khách hàng: ", e);
             model.addAttribute("error", "Có lỗi xảy ra khi thêm khách hàng!");
+            model.addAttribute("nationality", nationalities);
             return "customer/form";
         }
     }
@@ -148,6 +151,7 @@ public class CustomerController {
         if (customer.isPresent()) {
             CustomerRequest customerRequest = CustomerRequest.fromEntity(customer.get());
             model.addAttribute("customerRequest", customerRequest);
+            model.addAttribute("nationality", nationalities);
             return "customer/form";
         } else {
             redirectAttributes.addFlashAttribute("error", "Không tìm thấy khách hàng với ID: " + id);
@@ -181,6 +185,7 @@ public class CustomerController {
         }
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("nationality", nationalities);
             return "customer/form";
         }
 
@@ -193,6 +198,7 @@ public class CustomerController {
         } catch (Exception e) {
             log.error("Lỗi khi cập nhật khách hàng ID {}: ", id, e);
             model.addAttribute("error", "Có lỗi xảy ra khi cập nhật khách hàng!");
+            model.addAttribute("nationality", nationalities);
             return "customer/form";
         }
     }
