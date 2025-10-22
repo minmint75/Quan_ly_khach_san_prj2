@@ -23,6 +23,204 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    private static final List<String> nationalities = List.of(
+        "Afghanistan",
+        "Albania",
+        "Algeria",
+        "Andorra",
+        "Angola",
+        "Antigua and Barbuda",
+        "Argentina",
+        "Armenia",
+        "Úc",
+        "Áo",
+        "Azerbaijan",
+        "Bahamas",
+        "Bahrain",
+        "Bangladesh",
+        "Barbados",
+        "Belarus",
+        "Bỉ",
+        "Belize",
+        "Benin",
+        "Bhutan",
+        "Bolivia",
+        "Bosnia and Herzegovina",
+        "Botswana",
+        "Brazil",
+        "Brunei",
+        "Bulgaria",
+        "Burkina Faso",
+        "Burundi",
+        "Cabo Verde",
+        "Campuchia",
+        "Cameroon",
+        "Canada",
+        "Cộng hòa Trung Phi",
+        "Chad",
+        "Chile",
+        "Trung Quốc",
+        "Colombia",
+        "Comoros",
+        "Congo",
+        "Costa Rica",
+        "Bờ Biển Ngà",
+        "Croatia",
+        "Cuba",
+        "Cyprus",
+        "Séc (Cộng hòa Séc)",
+        "Đan Mạch",
+        "Djibouti",
+        "Dominica",
+        "Dominican Republic",
+        "Cộng hòa Dân chủ Công-gô",
+        "Ecuador",
+        "Ai Cập",
+        "El Salvador",
+        "Equatorial Guinea",
+        "Eritrea",
+        "Estonia",
+        "Eswatini",
+        "Ethiopia",
+        "Fiji",
+        "Phần Lan",
+        "Pháp",
+        "Gabon",
+        "Gambia",
+        "Georgia",
+        "Đức",
+        "Ghana",
+        "Hy Lạp",
+        "Grenada",
+        "Guatemala",
+        "Guinea",
+        "Guinea-Bissau",
+        "Guyana",
+        "Haiti",
+        "Holy See",
+        "Honduras",
+        "Hungary",
+        "Iceland",
+        "Ấn Độ",
+        "Indonesia",
+        "Iran",
+        "Iraq",
+        "Ireland",
+        "Israel",
+        "Ý",
+        "Jamaica",
+        "Nhật Bản",
+        "Jordan",
+        "Kazakhstan",
+        "Kenya",
+        "Kiribati",
+        "Kuwait",
+        "Kyrgyzstan",
+        "Lào",
+        "Latvia",
+        "Lebanon",
+        "Lesotho",
+        "Liberia",
+        "Libya",
+        "Liechtenstein",
+        "Lithuania",
+        "Luxembourg",
+        "Madagascar",
+        "Malawi",
+        "Malaysia",
+        "Maldives",
+        "Mali",
+        "Malta",
+        "Quần đảo Mác-san",
+        "Mauritania",
+        "Mauritius",
+        "Mexico",
+        "Micronesia",
+        "Moldova",
+        "Monaco",
+        "Mông Cổ",
+        "Montenegro",
+        "Morocco",
+        "Mozambique",
+        "Myanmar",
+        "Namibia",
+        "Nauru",
+        "Nepal",
+        "Hà Lan",
+        "New Zealand",
+        "Nicaragua",
+        "Niger",
+        "Nigeria",
+        "Triều Tiên (Bắc Hàn)",
+        "North Macedonia",
+        "Na Uy",
+        "Oman",
+        "Pakistan",
+        "Palau",
+        "Panama",
+        "Papua New Guinea",
+        "Paraguay",
+        "Peru",
+        "Philippines",
+        "Ba Lan",
+        "Bồ Đào Nha",
+        "Qatar",
+        "Romania",
+        "Nga",
+        "Rwanda",
+        "Saint Kitts & Nevis",
+        "Saint Lucia",
+        "Samoa",
+        "San Marino",
+        "Sao Tome & Principe",
+        "Ả Rập Xê-út",
+        "Senegal",
+        "Serbia",
+        "Seychelles",
+        "Sierra Leone",
+        "Singapore",
+        "Slovakia",
+        "Slovenia",
+        "Solomon Islands",
+        "Somalia",
+        "Nam Phi",
+        "Hàn Quốc",
+        "South Sudan",
+        "Tây Ban Nha",
+        "Sri Lanka",
+        "St. Vincent & Grenadines",
+        "State of Palestine",
+        "Sudan",
+        "Suriname",
+        "Thụy Điển",
+        "Thụy Sĩ",
+        "Syria",
+        "Tajikistan",
+        "Tanzania",
+        "Thái Lan",
+        "Đông Timor",
+        "Togo",
+        "Tonga",
+        "Trinidad and Tobago",
+        "Tunisia",
+        "Turkey",
+        "Turkmenistan",
+        "Tuvalu",
+        "Uganda",
+        "Ukraine",
+        "Các Tiểu Vương Quốc Ả Rập Thống Nhất",
+        "Vương quốc Anh",
+        "Hoa Kỳ (Mỹ)",
+        "Uruguay",
+        "Uzbekistan",
+        "Vanuatu",
+        "Venezuela",
+        "Việt Nam",
+        "Yemen",
+        "Zambia",
+        "Zimbabwe"
+    );
+
     // === API LIST ===
     @GetMapping("/api/list")
     @ResponseBody
@@ -71,6 +269,7 @@ public class CustomerController {
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("customerRequest", new CustomerRequest());
+        model.addAttribute("nationality", nationalities);
         return "customer/form";
     }
 
@@ -97,6 +296,7 @@ public class CustomerController {
 
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("nationality", nationalities);
             return "customer/form";
         }
 
@@ -108,6 +308,7 @@ public class CustomerController {
         } catch (Exception e) {
             log.error("Lỗi khi thêm khách hàng: ", e);
             model.addAttribute("error", "Có lỗi xảy ra khi thêm khách hàng!");
+            model.addAttribute("nationality", nationalities);
             return "customer/form";
         }
     }
@@ -120,6 +321,7 @@ public class CustomerController {
         if (customer.isPresent()) {
             CustomerRequest customerRequest = CustomerRequest.fromEntity(customer.get());
             model.addAttribute("customerRequest", customerRequest);
+            model.addAttribute("nationality", nationalities);
             return "customer/form";
         } else {
             redirectAttributes.addFlashAttribute("error", "Không tìm thấy khách hàng với ID: " + id);
@@ -153,6 +355,7 @@ public class CustomerController {
         }
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("nationality", nationalities);
             return "customer/form";
         }
 
@@ -165,6 +368,7 @@ public class CustomerController {
         } catch (Exception e) {
             log.error("Lỗi khi cập nhật khách hàng ID {}: ", id, e);
             model.addAttribute("error", "Có lỗi xảy ra khi cập nhật khách hàng!");
+            model.addAttribute("nationality", nationalities);
             return "customer/form";
         }
     }
