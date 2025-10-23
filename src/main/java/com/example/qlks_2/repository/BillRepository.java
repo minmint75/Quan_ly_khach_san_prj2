@@ -27,20 +27,28 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             "(:startDate IS NULL OR b.createdAt >= :startDate) AND " +
             "(:endDate IS NULL OR b.createdAt <= :endDate) " +
             "ORDER BY b.createdAt DESC")
-    Page<Bill> findByFilters(@Param("bookingId") Long bookingId,
+    Page<Bill> findByFiltersPageable(@Param("bookingId") Long bookingId,
                              @Param("status") Bill.BillStatus status,
                              @Param("startDate") LocalDateTime startDate,
                              @Param("endDate") LocalDateTime endDate,
                              Pageable pageable);
 
-    @Query("SELECT b FROM Bill b ORDER BY b.createdAt DESC")
-    Optional<Bill> findLatestBill();
+    @Query("SELECT b FROM Bill b WHERE " +
+            "(:bookingId IS NULL OR b.bookingId = :bookingId) AND " +
+            "(:status IS NULL OR b.status = :status) AND " +
+            "(:startDate IS NULL OR b.createdAt >= :startDate) AND " +
+            "(:endDate IS NULL OR b.createdAt <= :endDate) " +
+            "ORDER BY b.createdAt DESC")
+    List<Bill> findByFilters(@Param("bookingId") Long bookingId,
+                                     @Param("status") Bill.BillStatus status,
+                                     @Param("startDate") LocalDateTime startDate,
+                                     @Param("endDate") LocalDateTime endDate);
 
     @Query("SELECT b FROM Bill b ORDER BY b.createdAt DESC")
     Page<Bill> findAllPageable(Pageable pageable);
 
     void deleteById(Long billId);
 
-    Long billId(Long billId);
+
 
 }

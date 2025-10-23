@@ -14,4 +14,5 @@ public interface BillService {
     Bill saveBill(Bill bill);
     Bill updateBill(Long billId, Bill updatedBill);
     void deleteBillById(Long billId);
+    List<Bill> searchBill(Long bookingId, Bill.BillStatus status, LocalDateTime startDate, LocalDateTime endDate);
 }
