@@ -40,4 +40,7 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     Page<Bill> findAllPageable(Pageable pageable);
 
     void deleteById(Long billId);
+
+    Long billId(Long billId);
+
 }
