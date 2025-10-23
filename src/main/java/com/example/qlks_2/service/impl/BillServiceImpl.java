@@ -32,5 +32,11 @@ public class BillServiceImpl implements BillService {
         return billRepository.save(bill);
     }
 
+    @Override
+    public Bill updateBill(Long billId, Bill updateBill ){
+        log.info("Cập nhật hóa đơn theo id: {}", billId);
+        return billRepository.saveAndFlush(updateBill);
+    }
+
 
 }
