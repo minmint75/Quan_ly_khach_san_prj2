@@ -3,12 +3,15 @@ package com.example.qlks_2.service.impl;
 import com.example.qlks_2.entity.Booking;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.qlks_2.entity.Bill;
 import com.example.qlks_2.repository.BillRepository;
 import com.example.qlks_2.service.BillService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,4 +47,21 @@ public class BillServiceImpl implements BillService {
         billRepository.deleteById(billId);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Bill> searchBill(Long bookingId, Bill.BillStatus status, LocalDateTime startDate, LocalDateTime endDate) {
+
+        if (bookingId != null && startDate != null && endDate != null) {
+            return billRepository.findByFilters(bookingId, status, startDate, endDate);
+        }
+
+        if (bookingId != null) {
+            return billRepository.findByBookingId(bookingId);
+        }
+
+        if (startDate != null && endDate != null) {
+            return billRepository.findByCreatedAtBetween(startDate, endDate);
+        }
+        return billRepository.findAll();
+    }
 }
