@@ -1,5 +1,6 @@
 package com.example.qlks_2.service.impl;
 
+import com.example.qlks_2.entity.Booking;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import com.example.qlks_2.repository.BillRepository;
 import com.example.qlks_2.service.BillService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,11 @@ public class BillServiceImpl implements BillService {
         return billRepository.findAll();
     }
 
+    @Override
+    public Bill saveBill(Bill bill){
+        log.info("Thêm hóa đơn mới : {}", bill);
+        return billRepository.save(bill);
+    }
 
 
 }
