@@ -38,5 +38,10 @@ public class BillServiceImpl implements BillService {
         return billRepository.saveAndFlush(updateBill);
     }
 
+    @Override
+    public void deleteBillById(Long billId){
+        log.info("Xóa hóa đơn  theo id: {}", billId);
+        billRepository.deleteById(billId);
+    }
 
 }
