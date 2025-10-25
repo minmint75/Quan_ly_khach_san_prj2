@@ -81,6 +81,7 @@ public class BillController {
     @ResponseBody
     public ResponseEntity<?> apiAddBill(@Valid @RequestBody BillRequest billRequest) {
         try {
+            billRequest.validateData();
             Bill bill = billRequest.toEntity();
             Bill saved = billService.saveBill(bill);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
@@ -99,10 +100,17 @@ public class BillController {
     @ResponseBody
     public ResponseEntity<?> apiUpdateBill(@PathVariable Long id, @Valid @RequestBody BillRequest billRequest) {
         try {
+            billRequest.validateData();
             Bill billToUpdate = billRequest.toEntity();
             billToUpdate.setBillId(id); // Đảm bảo ID được thiết lập cho hàm saveAndFlush/update trong Service
             Bill updated = billService.updateBill(id, billToUpdate);
             return ResponseEntity.ok(updated);
+        } catch (IllegalArgumentException e) {
+            log.warn("Lỗi validation khi cập nhật hóa đơn: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (IllegalStateException e) {
+            log.warn("Không cho phép cập nhật hóa đơn đã thanh toán: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
             log.error("API update bill error for ID {}", id, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update bill");
@@ -118,6 +126,12 @@ public class BillController {
         try {
             billService.deleteBillById(id);
             return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            log.warn("API delete bill not found {}: {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (IllegalStateException e) {
+            log.warn("API delete bill blocked for paid bill {}: {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
             log.error("API delete bill error for ID {}", id, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete bill");

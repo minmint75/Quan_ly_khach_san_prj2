@@ -36,12 +36,26 @@ public class BillServiceImpl implements BillService {
     @Override
     public Bill updateBill(Long billId, Bill updateBill ){
         log.info("Cập nhật hóa đơn theo id: {}", billId);
+        Bill existing = billRepository.findById(billId)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy hóa đơn với ID: " + billId));
+        if (existing.getStatus() == Bill.BillStatus.PAID) {
+            throw new IllegalStateException("Hóa đơn đã thanh toán và không thể chỉnh sửa.");
+        }
+        if (updateBill.getCreatedAt() == null) {
+            updateBill.setCreatedAt(existing.getCreatedAt());
+        }
+        updateBill.setBillId(billId);
         return billRepository.saveAndFlush(updateBill);
     }
 
     @Override
     public void deleteBillById(Long billId){
         log.info("Xóa hóa đơn  theo id: {}", billId);
+        Bill existing = billRepository.findById(billId)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy hóa đơn với ID: " + billId));
+        if (existing.getStatus() == Bill.BillStatus.PAID) {
+            throw new IllegalStateException("Hóa đơn đã thanh toán và không thể xóa.");
+        }
         billRepository.deleteById(billId);
     }
 
