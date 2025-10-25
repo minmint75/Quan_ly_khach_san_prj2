@@ -16,7 +16,7 @@ public class ServiceUsage {
 
     @ManyToOne
     @JoinColumn(name = "service_id", nullable = false)
-    private Service service;
+    private ServiceEntity service;
 
     @Column(name = "so_luong", nullable = false)
     private Integer soLuong;
@@ -31,8 +31,8 @@ public class ServiceUsage {
     public Long getBookingId() { return bookingId; }
     public void setBookingId(Long bookingId) { this.bookingId = bookingId; }
 
-    public Service getService() { return service; }
-    public void setService(Service service) { this.service = service; }
+    public ServiceEntity getService() { return service; }
+    public void setService(ServiceEntity service) { this.service = service; }
 
     public Integer getSoLuong() { return soLuong; }
     public void setSoLuong(Integer soLuong) { this.soLuong = soLuong; }
