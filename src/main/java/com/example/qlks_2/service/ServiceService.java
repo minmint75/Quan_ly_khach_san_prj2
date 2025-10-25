@@ -1,10 +1,11 @@
 package com.example.qlks_2.service;
 
-import com.example.qlks_2.entity.Service;
+import com.example.qlks_2.entity.ServiceEntity;
 import com.example.qlks_2.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -14,18 +15,18 @@ public class ServiceService {
     private ServiceRepository serviceRepository;
 
     // 1️⃣ Lấy danh sách dịch vụ + phân trang
-    public Page<Service> getAllServices(int page, int size) {
+    public Page<ServiceEntity> getAllServices(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return serviceRepository.findAll(pageable);
     }
 
     // 2️⃣ Thêm dịch vụ mới
-    public Service addService(Service service) {
+    public ServiceEntity addService(ServiceEntity service) {
         return serviceRepository.save(service);
     }
 
     // 3️⃣ Chỉnh sửa dịch vụ
-    public Optional<Service> updateService(Long id, Service updatedService) {
+    public Optional<ServiceEntity> updateService(Long id, ServiceEntity updatedService) {
         return serviceRepository.findById(id).map(existing -> {
             existing.setTenDichVu(updatedService.getTenDichVu());
             existing.setMoTa(updatedService.getMoTa());
@@ -46,18 +47,18 @@ public class ServiceService {
     }
 
     // 5️⃣ Tìm kiếm dịch vụ theo tên hoặc loại
-    public Page<Service> searchServices(String keyword, int page, int size) {
+    public Page<ServiceEntity> searchServices(String keyword, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return serviceRepository.findByTenDichVuContainingIgnoreCaseOrLoaiDichVuContainingIgnoreCase(keyword, keyword, pageable);
     }
 
     // 6️⃣ Sắp xếp
-    public Page<Service> sortByNameAsc(int page, int size) {
+    public Page<ServiceEntity> sortByNameAsc(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return serviceRepository.sortByNameAsc(pageable);
     }
 
-    public Page<Service> sortByPriceAsc(int page, int size) {
+    public Page<ServiceEntity> sortByPriceAsc(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return serviceRepository.sortByPriceAsc(pageable);
     }

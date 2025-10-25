@@ -16,6 +16,8 @@ import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -90,6 +92,17 @@ public class CustomerController {
             return request;
         }
     }
+    private static final Set<String> NATIONALITIES = Set.of(
+            "Chọn quốc tịch",
+            "Việt Nam",
+            "Hoa Kỳ",
+            "Nhật Bản",
+            "Hàn Quốc",
+            "Anh",
+            "Pháp",
+            "Đức"
+
+    );
 
     // DTO for frontend JSON responses
     public static class CustomerJsonResponse {
@@ -205,7 +218,7 @@ public class CustomerController {
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("customerRequest", new CustomerRequest());
-        model.addAttribute("nationality", NATIONALITIES);
+        model.addAttribute("nationality", NATIONALITIES );
         return "customer/form";
     }
 

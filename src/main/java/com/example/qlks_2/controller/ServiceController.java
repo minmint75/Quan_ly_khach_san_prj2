@@ -1,6 +1,6 @@
 package com.example.qlks_2.controller;
 
-import com.example.qlks_2.entity.Service;
+import com.example.qlks_2.entity.ServiceEntity;
 import com.example.qlks_2.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,20 +17,20 @@ public class ServiceController {
 
     // 1️⃣ Lấy danh sách dịch vụ (phân trang)
     @GetMapping
-    public Page<Service> getAllServices(@RequestParam(defaultValue = "0") int page,
-                                        @RequestParam(defaultValue = "10") int size) {
+    public Page<ServiceEntity> getAllServices(@RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "10") int size) {
         return serviceService.getAllServices(page, size);
     }
 
     // 2️⃣ Thêm dịch vụ mới
     @PostMapping
-    public Service addService(@RequestBody Service service) {
+    public ServiceEntity addService(@RequestBody ServiceEntity service) {
         return serviceService.addService(service);
     }
 
     // 3️⃣ Cập nhật dịch vụ
     @PutMapping("/{id}")
-    public Optional<Service> updateService(@PathVariable Long id, @RequestBody Service updatedService) {
+    public Optional<ServiceEntity> updateService(@PathVariable Long id, @RequestBody ServiceEntity updatedService) {
         return serviceService.updateService(id, updatedService);
     }
 
@@ -42,23 +42,23 @@ public class ServiceController {
 
     // 5️⃣ Tìm kiếm dịch vụ
     @GetMapping("/search")
-    public Page<Service> searchServices(@RequestParam String keyword,
-                                        @RequestParam(defaultValue = "0") int page,
-                                        @RequestParam(defaultValue = "10") int size) {
+    public Page<ServiceEntity> searchServices(@RequestParam String keyword,
+                                              @RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "10") int size) {
         return serviceService.searchServices(keyword, page, size);
     }
 
     // 6️⃣ Sắp xếp theo tên
     @GetMapping("/sort/name")
-    public Page<Service> sortByName(@RequestParam(defaultValue = "0") int page,
-                                    @RequestParam(defaultValue = "10") int size) {
+    public Page<ServiceEntity> sortByName(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "10") int size) {
         return serviceService.sortByNameAsc(page, size);
     }
 
     // 7️⃣ Sắp xếp theo giá
     @GetMapping("/sort/price")
-    public Page<Service> sortByPrice(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "10") int size) {
+    public Page<ServiceEntity> sortByPrice(@RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size) {
         return serviceService.sortByPriceAsc(page, size);
     }
 }
