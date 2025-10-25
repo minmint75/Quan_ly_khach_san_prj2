@@ -40,7 +40,7 @@ public class Room {
     @NotNull(message = "Loại phòng không được để trống")
     private RoomType roomType;
 
-    @Column(name = "room_floor", nullable = false, unique=true)
+    @Column(name = "room_floor", nullable = false)
     @NotNull(message = "Tầng phòng không được để trống")
     @Positive(message = "Tầng phòng phải là số dương")
     private int roomFloor;
