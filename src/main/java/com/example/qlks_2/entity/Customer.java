@@ -18,29 +18,24 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_id", nullable = false, length = 10)
-    @NotBlank(message = "Mã khách hàng không được để trống")
-    @Size(min = 3, max = 10, message = "Mã khách hàng phải có từ 3 đến 10 ký tự")
+    @Column(name = "customer_id", nullable = false)
     private Long customerId;
 
     @Column(name = "name", nullable = false, length = 100)
     @NotBlank(message = "Tên khách hàng không được để trống")
     private String name;
 
-    @Column(name = "email", nullable = false, length = 100)
-    @NotBlank(message = "Email không được để trống")
+    @Column(name = "email", length = 100)
     @Email(message = "Email không hợp lệ")
     private String email;
 
-    @Column(name = "identification", nullable = false, length = 12)
-    @NotBlank(message = "CCCD không được để trống")
-    @Pattern(regexp = "^[0-9]{12}$", message = "CCCD phải là 12 chữ số")
-    private int identification;
+    @Column(name = "identification", nullable = false)
+    @NotNull(message = "CCCD không được để trống")
+    private long identification;
 
-    @Column(name = "phone_number", nullable = false, length = 10)
-    @NotBlank(message = "Số điện thoại không được để trống")
-    @Pattern(regexp = "^(0[0-9]{9})$", message = "Số điện thoại phải có 10 số và bắt đầu bằng 0")
-    private int phoneNumber;
+    @Column(name = "phone_number", nullable = false)
+    @NotNull(message = "Số điện thoại không được để trống")
+    private long phoneNumber;
 
     @Column(name = "nationality", length = 50)
     private String nationality;

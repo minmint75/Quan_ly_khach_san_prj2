@@ -10,10 +10,10 @@ import com.example.qlks_2.entity.Customer;
 @AllArgsConstructor
 public class CustomerRequest {
 
-    private Long customerId;  // 🔥 đổi từ String sang Long
+    private Long customerId;
     private String name;
-    private int identification;
-    private int phoneNumber;
+    private long identification;
+    private long phoneNumber;
     private String email;
     private String nationality;
     private String address;
