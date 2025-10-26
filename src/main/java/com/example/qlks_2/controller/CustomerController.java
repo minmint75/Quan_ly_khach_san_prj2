@@ -16,11 +16,10 @@ import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Collections;
 
 @Slf4j
 @Controller
@@ -92,17 +91,6 @@ public class CustomerController {
             return request;
         }
     }
-    private static final Set<String> NATIONALITIES = Set.of(
-            "Chọn quốc tịch",
-            "Việt Nam",
-            "Hoa Kỳ",
-            "Nhật Bản",
-            "Hàn Quốc",
-            "Anh",
-            "Pháp",
-            "Đức"
-
-    );
 
     // DTO for frontend JSON responses
     public static class CustomerJsonResponse {
@@ -218,7 +206,7 @@ public class CustomerController {
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("customerRequest", new CustomerRequest());
-        model.addAttribute("nationality", NATIONALITIES );
+        // Nationalities will be loaded via separate API endpoint
         return "customer/form";
     }
 
@@ -245,7 +233,7 @@ public class CustomerController {
 
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("nationality", NATIONALITIES);
+            model.addAttribute("nationality", Collections.emptyList());
             return "customer/form";
         }
 
@@ -257,7 +245,7 @@ public class CustomerController {
         } catch (Exception e) {
             log.error("Lỗi khi thêm khách hàng: ", e);
             model.addAttribute("error", "Có lỗi xảy ra khi thêm khách hàng!");
-            model.addAttribute("nationality", NATIONALITIES);
+            model.addAttribute("nationality", Collections.emptyList());
             return "customer/form";
         }
     }
@@ -270,7 +258,7 @@ public class CustomerController {
         if (customer.isPresent()) {
             CustomerRequest customerRequest = CustomerRequest.fromEntity(customer.get());
             model.addAttribute("customerRequest", customerRequest);
-            model.addAttribute("nationality", NATIONALITIES);
+            model.addAttribute("nationality", Collections.emptyList());
             return "customer/form";
         } else {
             redirectAttributes.addFlashAttribute("error", "Không tìm thấy khách hàng với ID: " + id);
@@ -304,7 +292,7 @@ public class CustomerController {
         }
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("nationality", NATIONALITIES);
+            model.addAttribute("nationality", Collections.emptyList());
             return "customer/form";
         }
 
@@ -317,7 +305,7 @@ public class CustomerController {
         } catch (Exception e) {
             log.error("Lỗi khi cập nhật khách hàng ID {}: ", id, e);
             model.addAttribute("error", "Có lỗi xảy ra khi cập nhật khách hàng!");
-            model.addAttribute("nationality", NATIONALITIES);
+            model.addAttribute("nationality", Collections.emptyList());
             return "customer/form";
         }
     }
