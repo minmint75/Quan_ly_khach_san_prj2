@@ -1,10 +1,16 @@
 package com.example.qlks_2.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "service_usage")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ServiceUsage {
 
     @Id
@@ -14,29 +20,13 @@ public class ServiceUsage {
     @Column(name = "booking_id", nullable = false)
     private Long bookingId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", nullable = false)
     private ServiceEntity service;
 
-    @Column(name = "so_luong", nullable = false)
-    private Integer soLuong;
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
 
-    @Column(name = "ngay_su_dung")
-    private LocalDate ngaySuDung;
-
-    // Getters và Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Long getBookingId() { return bookingId; }
-    public void setBookingId(Long bookingId) { this.bookingId = bookingId; }
-
-    public ServiceEntity getService() { return service; }
-    public void setService(ServiceEntity service) { this.service = service; }
-
-    public Integer getSoLuong() { return soLuong; }
-    public void setSoLuong(Integer soLuong) { this.soLuong = soLuong; }
-
-    public LocalDate getNgaySuDung() { return ngaySuDung; }
-    public void setNgaySuDung(LocalDate ngaySuDung) { this.ngaySuDung = ngaySuDung; }
+    @Column(name = "usage_date")
+    private LocalDate usageDate;
 }
