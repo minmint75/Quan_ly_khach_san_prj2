@@ -16,21 +16,21 @@ public interface ServiceUsageRepository extends JpaRepository<ServiceUsage, Long
 
     List<ServiceUsage> findByBookingId(Long bookingId);
 
-    @Query("SELECT su FROM ServiceUsage su WHERE su.service.id = :serviceId")
+    @Query("SELECT su FROM ServiceUsage su WHERE su.service.serviceId = :serviceId")
     List<ServiceUsage> findByServiceId(@Param("serviceId") Long serviceId);
 
-    List<ServiceUsage> findByNgaySuDung(LocalDate ngaySuDung);
+    List<ServiceUsage> findByUsageDate(LocalDate UsageDate);
 
-    @Query("SELECT su FROM ServiceUsage su WHERE su.ngaySuDung BETWEEN :start AND :end ORDER BY su.ngaySuDung DESC")
-    List<ServiceUsage> findByNgaySuDungBetween(@Param("start") LocalDate start, @Param("end") LocalDate end);
+    @Query("SELECT su FROM ServiceUsage su WHERE su.usageDate BETWEEN :start AND :end ORDER BY su.usageDate DESC")
+    List<ServiceUsage> findByUsageDateBetween(@Param("start") LocalDate start, @Param("end") LocalDate end);
 
     @Query("""
         SELECT su FROM ServiceUsage su
         WHERE (:bookingId IS NULL OR su.bookingId = :bookingId)
-        AND (:serviceId IS NULL OR su.service.id = :serviceId)
-        AND (:startDate IS NULL OR su.ngaySuDung >= :startDate)
-        AND (:endDate IS NULL OR su.ngaySuDung <= :endDate)
-        ORDER BY su.ngaySuDung DESC
+        AND (:serviceId IS NULL OR su.service.serviceId = :serviceId)
+        AND (:startDate IS NULL OR su.usageDate >= :startDate)
+        AND (:endDate IS NULL OR su.usageDate <= :endDate)
+        ORDER BY su.usageDate DESC
     """)
     List<ServiceUsage> findByFilters(
             @Param("bookingId") Long bookingId,
@@ -42,10 +42,10 @@ public interface ServiceUsageRepository extends JpaRepository<ServiceUsage, Long
     @Query("""
         SELECT su FROM ServiceUsage su
         WHERE (:bookingId IS NULL OR su.bookingId = :bookingId)
-        AND (:serviceId IS NULL OR su.service.id = :serviceId)
-        AND (:startDate IS NULL OR su.ngaySuDung >= :startDate)
-        AND (:endDate IS NULL OR su.ngaySuDung <= :endDate)
-        ORDER BY su.ngaySuDung DESC
+        AND (:serviceId IS NULL OR su.service.serviceId = :serviceId)
+        AND (:startDate IS NULL OR su.usageDate >= :startDate)
+        AND (:endDate IS NULL OR su.usageDate <= :endDate)
+        ORDER BY su.usageDate DESC
     """)
     Page<ServiceUsage> findByFiltersPageable(
             @Param("bookingId") Long bookingId,
@@ -55,6 +55,6 @@ public interface ServiceUsageRepository extends JpaRepository<ServiceUsage, Long
             Pageable pageable
     );
 
-    @Query("SELECT su FROM ServiceUsage su ORDER BY su.ngaySuDung DESC")
+    @Query("SELECT su FROM ServiceUsage su ORDER BY su.usageDate DESC")
     Page<ServiceUsage> findAllPageable(Pageable pageable);
 }
