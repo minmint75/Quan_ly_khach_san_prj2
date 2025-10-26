@@ -46,8 +46,8 @@ public class ServiceUsageServiceImpl implements ServiceUsageService {
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy bản ghi ID: " + id));
         existing.setBookingId(updateData.getBookingId());
         existing.setService(updateData.getService());
-        existing.setSoLuong(updateData.getSoLuong());
-        existing.setNgaySuDung(updateData.getNgaySuDung());
+        existing.setQuantity(updateData.getQuantity());
+        existing.setUsageDate(updateData.getUsageDate());
         return repository.saveAndFlush(existing);
     }
 
@@ -63,7 +63,7 @@ public class ServiceUsageServiceImpl implements ServiceUsageService {
     public List<ServiceUsage> searchByServiceName(String keyword) {
         log.info("Tìm kiếm theo tên dịch vụ: {}", keyword);
         return repository.findAll().stream()
-                .filter(su -> su.getService().getName().toLowerCase().contains(keyword.toLowerCase()))
+                .filter(su -> su.getService().getTenDichVu().toLowerCase().contains(keyword.toLowerCase()))
                 .toList();
     }
 

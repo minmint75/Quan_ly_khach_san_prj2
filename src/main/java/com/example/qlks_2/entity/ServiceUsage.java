@@ -15,7 +15,7 @@ public class ServiceUsage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long serviceUsageId;
 
     @Column(name = "booking_id", nullable = false)
     private Long bookingId;

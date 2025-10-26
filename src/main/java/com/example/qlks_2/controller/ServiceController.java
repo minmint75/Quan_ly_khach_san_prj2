@@ -32,7 +32,6 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
 
-    // Helper: Lấy danh sách các giá trị Enum hiển thị (Đã dịch)
     private List<String> getServiceTypeDisplayNames() {
         return Arrays.stream(ServiceType.values())
                 .map(ServiceType::getDisplayName)
