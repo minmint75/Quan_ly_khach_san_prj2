@@ -73,6 +73,43 @@ public class EmployeeController {
         return employeeService.getEmployeeById(id);
     }
 
+    // === API ADD ===
+    @PostMapping("/api/add")
+    @ResponseBody
+    public Employee addEmployeeApi(@RequestBody EmployeeRequest employeeRequest) {
+        log.info("API: Thêm nhân viên mới: {}", employeeRequest);
+        
+        if (employeeRequest.getName() == null || employeeRequest.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên nhân viên không được để trống");
+        }
+        
+        Employee employee = employeeRequest.toEntity();
+        return employeeService.saveEmployee(employee);
+    }
+
+    // === API UPDATE ===
+    @PutMapping("/api/{id}")
+    @ResponseBody
+    public Employee updateEmployeeApi(@PathVariable Long id, @RequestBody EmployeeRequest employeeRequest) {
+        log.info("API: Cập nhật nhân viên ID {}: {}", id, employeeRequest);
+        
+        if (employeeRequest.getName() == null || employeeRequest.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên nhân viên không được để trống");
+        }
+        
+        Employee employee = employeeRequest.toEntity();
+        employee.setEmployeeId(id);
+        return employeeService.saveEmployee(employee);
+    }
+
+    // === API DELETE ===
+    @DeleteMapping("/api/{id}")
+    @ResponseBody
+    public void deleteEmployeeApi(@PathVariable Long id) {
+        log.info("API: Xóa nhân viên ID {}", id);
+        employeeService.deleteEmployeeById(id);
+    }
+
     // === ADD FORM ===
     @GetMapping("/add")
     public String showAddForm(Model model) {
