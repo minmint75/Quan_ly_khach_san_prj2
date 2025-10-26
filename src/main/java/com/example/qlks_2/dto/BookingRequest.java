@@ -14,8 +14,8 @@ public class BookingRequest {
     private Long bookingId;
     private Long roomId;
     private Long customerId;
-    private LocalDateTime CheckIn;
-    private LocalDateTime CheckOut;
+    private LocalDateTime checkIn;
+    private LocalDateTime checkOut;
     private Booking.BookingStatus status;
 
     public Booking toEntity(){
@@ -23,8 +23,8 @@ public class BookingRequest {
         booking.setBookingId(this.bookingId);
         booking.setRoomId(this.roomId);
         booking.setCustomerId(this.customerId);
-        booking.setCheckIn(this.CheckIn);
-        booking.setCheckOut(this.CheckOut);
+        booking.setCheckIn(this.checkIn);
+        booking.setCheckOut(this.checkOut);
         booking.setStatus(this.status);
         return booking;
     }
@@ -41,7 +41,7 @@ public class BookingRequest {
     }
 
     public void validateDates() {
-        if (CheckIn != null && CheckOut != null && !CheckOut.isAfter(CheckIn)) {
+        if (checkIn != null && checkOut != null && !checkOut.isAfter(checkIn)) {
             throw new IllegalArgumentException("Ngày trả phòng (check-out) phải sau ngày nhận phòng (check-in).");
         }
     }

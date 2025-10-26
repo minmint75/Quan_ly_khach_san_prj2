@@ -2,7 +2,7 @@ package com.example.qlks_2.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,14 +21,14 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookingId;
 
-    @Column(name ="customer_id", nullable = false, length = 6)
+    @Column(name ="customer_id", nullable = false)
     @NotNull(message = "Mã khách hàng không được để trống")
-    @Size(min = 3, max = 10, message = "Mã khách hàng có 3 kí tự trở lên, tối đa 10 kí tự")
+    @Positive(message = "Mã khách hàng phải là số dương")
     private Long customerId;
 
-    @Column(name ="room_id", nullable = false, length = 6)
+    @Column(name ="room_id", nullable = false)
     @NotNull(message = "Mã phòng không được để trống")
-    @Size(min = 3, max = 10, message = "Mã phòng có 3 kí tự trở lên, tối đa 10 kí tự")
+    @Positive(message = "Mã phòng phải là số dương")
     private Long roomId;
 
     @Column(name = "check_in", nullable = false)
