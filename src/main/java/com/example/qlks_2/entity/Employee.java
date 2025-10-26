@@ -19,8 +19,6 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id", nullable = false, unique = true)
-    @NotBlank(message = "Mã nhân viên không được để trống")
-    @Size(min = 3, max = 10, message = "Mã nhân viên phải có từ 3 đến 10 ký tự")
     private Long employeeId;
 
     @Column(name = "name", nullable = false, length = 100)
@@ -32,9 +30,8 @@ public class Employee {
     @NotNull(message = "Chức vụ không được để trống")
     private EmployeeRole role;
 
-    @Column(name = "phone_number", nullable = false, length = 10)
-    @NotBlank(message = "Số điện thoại không được để trống")
-    @Pattern(regexp = "^(0[0-9]{9})$", message = "Số điện thoại phải có 10 số và bắt đầu bằng 0")
+    @Column(name = "phone_number", nullable = false)
+    @NotNull(message = "Số điện thoại không được để trống")
     private int phoneNumber;
 
     @Column(name = "email", nullable = false, length = 100)
