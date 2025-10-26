@@ -12,6 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -227,5 +230,111 @@ public class ServiceController {
     @RequestMapping("/api/test")
     public String test() {
         return "Service Backend is running!";
+    }
+
+    // === API ADD (JSON/multipart) ===
+    @PostMapping(value = "/api/add", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE })
+    @ResponseBody
+    public ResponseEntity<?> apiAddService(
+            @RequestParam("tenDichVu") String tenDichVu,
+            @RequestParam(value = "moTa", required = false) String moTa,
+            @RequestParam("gia") BigDecimal gia,
+            @RequestParam("loaiDichVu") String loaiDichVuStr,
+            @RequestParam("trangThai") String trangThaiStr) {
+        try {
+            log.info("API: Thêm dịch vụ mới: {}", tenDichVu);
+
+            // Validation
+            if (tenDichVu == null || tenDichVu.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tên dịch vụ không được để trống");
+            }
+            if (gia == null || gia.compareTo(BigDecimal.ZERO) <= 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Giá dịch vụ phải lớn hơn 0");
+            }
+
+            // Parse enums
+            ServiceType loaiDichVu;
+            ServiceStatus trangThai;
+            try {
+                loaiDichVu = ServiceType.valueOf(loaiDichVuStr);
+                trangThai = ServiceStatus.valueOf(trangThaiStr);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Loại dịch vụ hoặc trạng thái không hợp lệ");
+            }
+
+            ServiceEntity service = new ServiceEntity();
+            service.setTenDichVu(tenDichVu.trim());
+            service.setMoTa(moTa != null ? moTa.trim() : null);
+            service.setGia(gia);
+            service.setLoaiDichVu(loaiDichVu);
+            service.setTrangThai(trangThai);
+
+            ServiceEntity saved = serviceService.saveService(service);
+            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        } catch (Exception e) {
+            log.error("API add service error", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add service: " + e.getMessage());
+        }
+    }
+
+    // === API EDIT (JSON/multipart) ===
+    @PostMapping(value = "/api/edit/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE })
+    @ResponseBody
+    public ResponseEntity<?> apiEditService(
+            @PathVariable Long id,
+            @RequestParam("tenDichVu") String tenDichVu,
+            @RequestParam(value = "moTa", required = false) String moTa,
+            @RequestParam("gia") BigDecimal gia,
+            @RequestParam("loaiDichVu") String loaiDichVuStr,
+            @RequestParam("trangThai") String trangThaiStr) {
+        try {
+            log.info("API: Cập nhật dịch vụ ID {}: {}", id, tenDichVu);
+
+            // Validation
+            if (tenDichVu == null || tenDichVu.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tên dịch vụ không được để trống");
+            }
+            if (gia == null || gia.compareTo(BigDecimal.ZERO) <= 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Giá dịch vụ phải lớn hơn 0");
+            }
+
+            // Parse enums
+            ServiceType loaiDichVu;
+            ServiceStatus trangThai;
+            try {
+                loaiDichVu = ServiceType.valueOf(loaiDichVuStr);
+                trangThai = ServiceStatus.valueOf(trangThaiStr);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Loại dịch vụ hoặc trạng thái không hợp lệ");
+            }
+
+            ServiceEntity service = new ServiceEntity();
+            service.setServiceId(id);
+            service.setTenDichVu(tenDichVu.trim());
+            service.setMoTa(moTa != null ? moTa.trim() : null);
+            service.setGia(gia);
+            service.setLoaiDichVu(loaiDichVu);
+            service.setTrangThai(trangThai);
+
+            ServiceEntity saved = serviceService.updateService(id, service);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
+            log.error("API edit service error", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update service: " + e.getMessage());
+        }
+    }
+
+    // === API DELETE ===
+    @PostMapping("/api/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<?> apiDeleteService(@PathVariable Long id) {
+        try {
+            log.info("API: Xóa dịch vụ ID {}", id);
+            serviceService.deleteService(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            log.error("API delete service error", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete service");
+        }
     }
 }
