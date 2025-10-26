@@ -1,5 +1,6 @@
 package com.example.qlks_2.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -20,8 +21,9 @@ public class ServiceUsage {
     @Column(name = "booking_id", nullable = false)
     private Long bookingId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private ServiceEntity service;
 
     @Column(name = "quantity", nullable = false)
