@@ -22,7 +22,7 @@ public class ServiceUsage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", nullable = false)
-    private Service service;
+    private ServiceEntity service;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;

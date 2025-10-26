@@ -1,6 +1,7 @@
 package com.example.qlks_2.dto;
 
 import com.example.qlks_2.entity.Employee;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,12 +15,31 @@ public class EmployeeRequest {
 
     private Long employeeId;
     private String name;
-    private Employee.EmployeeRole position; // Changed from String
+    
+    @JsonProperty("position")
+    private Employee.EmployeeRole position;
+    
     private int phoneNumber;
     private String email;
-    private Employee.EmployeeShift shift; // Changed from String
+    
+    @JsonProperty("shift")
+    private Employee.EmployeeShift shift;
+    
     private BigDecimal salary;
-    private Employee.EmployeeStatus employeeStatus; // Changed from String
+    
+    @JsonProperty("employeeStatus")
+    private Employee.EmployeeStatus employeeStatus;
+    
+    // Custom setter to handle number to BigDecimal conversion
+    public void setSalary(Object salary) {
+        if (salary instanceof Number) {
+            this.salary = BigDecimal.valueOf(((Number) salary).doubleValue());
+        } else if (salary instanceof BigDecimal) {
+            this.salary = (BigDecimal) salary;
+        } else if (salary != null) {
+            this.salary = new BigDecimal(salary.toString());
+        }
+    }
 
     public Employee toEntity() {
         Employee employee = new Employee();
