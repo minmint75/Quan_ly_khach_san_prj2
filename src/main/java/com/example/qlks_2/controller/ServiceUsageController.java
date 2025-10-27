@@ -28,12 +28,72 @@ public class ServiceUsageController {
 
     @GetMapping("/api/list")
     @ResponseBody
-    public List<ServiceUsage> getAllApi(
+    public ResponseEntity<?> getAllApi(
             @RequestParam(value = "keyword", required = false) String keyword) {
-        if (keyword != null && !keyword.isEmpty()) {
-            return serviceUsageService.searchByServiceName(keyword);
+        try {
+            if (keyword != null && !keyword.isEmpty()) {
+                return ResponseEntity.ok(serviceUsageService.searchByServiceName(keyword));
+            }
+            return ResponseEntity.ok(serviceUsageService.getAll());
+        } catch (Exception e) {
+            log.error("Error getting service usage list", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi: " + e.getMessage());
         }
-        return serviceUsageService.getAll();
+    }
+
+    @GetMapping("/api/{id}")
+    @ResponseBody
+    public ResponseEntity<?> getByIdApi(@PathVariable Long id) {
+        Optional<ServiceUsage> usage = serviceUsageService.getById(id);
+        if (usage.isPresent()) {
+            return ResponseEntity.ok(usage.get());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy bản ghi!");
+    }
+
+    @PostMapping("/api/add")
+    @ResponseBody
+    public ResponseEntity<?> addApi(@RequestBody ServiceUsageRequest req) {
+        try {
+            req.validateData();
+            ServiceEntity serviceEntity = serviceService.getServiceById(req.getServiceId())
+                    .orElseThrow(() -> new RuntimeException("Service not found"));
+            ServiceUsage su = req.toEntity(serviceEntity);
+            ServiceUsage saved = serviceUsageService.save(su);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
+            log.error("Error adding service usage", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/api/edit/{id}")
+    @ResponseBody
+    public ResponseEntity<?> editApi(@PathVariable Long id, @RequestBody ServiceUsageRequest req) {
+        try {
+            req.validateData();
+            ServiceEntity serviceEntity = serviceService.getServiceById(req.getServiceId())
+                    .orElseThrow(() -> new RuntimeException("Service not found"));
+            ServiceUsage su = req.toEntity(serviceEntity);
+            ServiceUsage updated = serviceUsageService.update(id, su);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            log.error("Error updating service usage with id {}", id, e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/api/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deleteApi(@PathVariable Long id) {
+        try {
+            serviceUsageService.delete(id);
+            return ResponseEntity.ok("Xóa thành công!");
+        } catch (Exception e) {
+            log.error("Error deleting service usage with id {}", id, e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @GetMapping

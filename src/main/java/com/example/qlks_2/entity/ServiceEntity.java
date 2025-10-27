@@ -1,5 +1,7 @@
 package com.example.qlks_2.entity;
 
+import java.io.Serializable;
+import java.io.Serial;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -16,10 +18,14 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceEntity {
+public class ServiceEntity implements Serializable {
+    
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long serviceId;
 
     @Column(name = "ten_dich_vu", nullable = false, length = 100)
