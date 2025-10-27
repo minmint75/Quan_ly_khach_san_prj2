@@ -23,8 +23,8 @@ public class ServiceUsage {
     private Long bookingId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "service_id", nullable = false)
+    @JsonIgnoreProperties({"createdAt", "updatedAt", "moTa", "trangThai", "loaiDichVu"})
     private ServiceEntity service;
 
     @Column(name = "quantity", nullable = false)

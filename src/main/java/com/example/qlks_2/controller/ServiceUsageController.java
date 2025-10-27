@@ -26,6 +26,8 @@ public class ServiceUsageController {
     private final ServiceUsageService serviceUsageService;
     private final ServiceService serviceService;
 
+    // === REST API ENDPOINTS FOR FRONTEND ===
+    
     @GetMapping("/api/list")
     @ResponseBody
     public ResponseEntity<?> getAllApi(
@@ -95,7 +97,74 @@ public class ServiceUsageController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+    
+    @GetMapping("/api/{id}")
+    @ResponseBody
+    public ResponseEntity<ServiceUsage> getByIdApi(@PathVariable Long id) {
+        Optional<ServiceUsage> usage = serviceUsageService.getById(id);
+        return usage.map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+    }
+    
+    @PostMapping("/api/add")
+    @ResponseBody
+    public ResponseEntity<?> addApi(@RequestBody ServiceUsageRequest req) {
+        try {
+            log.info("API: Adding service usage - bookingId: {}, serviceId: {}, quantity: {}", 
+                    req.getBookingId(), req.getServiceId(), req.getQuantity());
+            
+            ServiceEntity serviceEntity = serviceService.getServiceById(req.getServiceId())
+                    .orElseThrow(() -> new RuntimeException("Service not found with id: " + req.getServiceId()));
+            
+            ServiceUsage su = req.toEntity(serviceEntity);
+            ServiceUsage saved = serviceUsageService.save(su);
+            log.info("API: Service usage added successfully with id: {}", saved.getServiceUsageId());
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
+            log.error("API: Error adding service usage", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
+    
+    @PostMapping("/api/edit/{id}")
+    @ResponseBody
+    public ResponseEntity<?> editApi(@PathVariable Long id,
+                                     @RequestBody ServiceUsageRequest req) {
+        try {
+            log.info("API: Updating service usage id: {}", id);
+            
+            ServiceEntity serviceEntity = serviceService.getServiceById(req.getServiceId())
+                    .orElseThrow(() -> new RuntimeException("Service not found with id: " + req.getServiceId()));
+            
+            ServiceUsage su = req.toEntity(serviceEntity);
+            ServiceUsage updated = serviceUsageService.update(id, su);
+            log.info("API: Service usage updated successfully");
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            log.error("API: Error updating service usage with id {}", id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
+    
+    @PostMapping("/api/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deleteApi(@PathVariable Long id) {
+        try {
+            log.info("API: Deleting service usage id: {}", id);
+            serviceUsageService.delete(id);
+            log.info("API: Service usage deleted successfully");
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error("API: Error deleting service usage with id {}", id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
 
+    // === THYMELEAF VIEW ENDPOINTS ===
+    
     @GetMapping
     public String list(Model model) {
         List<ServiceUsage> usages = serviceUsageService.getAll();
