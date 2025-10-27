@@ -16,13 +16,14 @@ public class ServiceUsage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long serviceUsageId;
 
     @Column(name = "booking_id", nullable = false)
     private Long bookingId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "service_id", nullable = false)
+    @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private ServiceEntity service;
 
@@ -30,5 +31,5 @@ public class ServiceUsage {
     private Integer quantity;
 
     @Column(name = "usage_date")
-    private LocalDate usageDate;
+    private LocalDate usageDate = LocalDate.now();  // Added default value
 }
