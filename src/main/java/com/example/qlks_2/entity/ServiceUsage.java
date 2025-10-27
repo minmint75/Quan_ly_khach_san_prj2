@@ -16,6 +16,7 @@ public class ServiceUsage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long serviceUsageId;
 
     @Column(name = "booking_id", nullable = false)
@@ -30,5 +31,5 @@ public class ServiceUsage {
     private Integer quantity;
 
     @Column(name = "usage_date")
-    private LocalDate usageDate;
+    private LocalDate usageDate = LocalDate.now();  // Added default value
 }
